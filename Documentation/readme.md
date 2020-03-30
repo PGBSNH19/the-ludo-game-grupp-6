@@ -1,4 +1,10 @@
 # Documentation
 
-Use this file to fill in your documentation
-
+```
+| abstract Class Player          | Interaction   |
+| ------------------------------ | ------------- |
+| BoardSquare[] squarePath (PK)  | BoardPiece    |
+|                                | Game Sesssion |
+|                                |               |
+|                                |               |
+```
