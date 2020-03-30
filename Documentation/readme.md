@@ -1,5 +1,6 @@
 # Documentation
 
+<<<<<<< HEAD
 | Class RedPlayer | Interaction |
 | --------------- | ----------- |
 |                 | Player      |
@@ -74,3 +75,24 @@ RunGame()
 ​	}
 
 }
+=======
+| Class RedPlayer                | Interaction   |
+| ------------------------------ | ------------- |
+|                                | Player        |
+
+| abstract Class Player          | Interaction   |
+| ------------------------------ | ------------- |
+| BoardSquare[] squarePath       | BoardPiece    |
+|                                | Game Session  |
+|                                | RedPlayer     |
+|                                | BluePlayer    |
+|                                | YellowPlayer  |
+|                                | GreenPlayer   |
+
+
+| Class GameSession              | Interaction   |
+| ------------------------------ | ------------- |
+|                                | Player        |
+|                                | GameBoard     |
+
+>>>>>>> 603f122fa1aea00509543935628ab0f8e9c77ffc
