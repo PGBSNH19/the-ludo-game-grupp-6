@@ -7,4 +7,4 @@ As a player i want to be able to knock my friends out.
 As a player i want to be able to save my progress.
 As a player i want to be able to start up where i left off.
 As a player i want to be able to finish a game.
-As a power user i want to be able to clear the database from depricated games and users.
+As a power user i want to be able to clear the database from deprecated games and users.
