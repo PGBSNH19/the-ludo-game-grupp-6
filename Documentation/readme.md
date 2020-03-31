@@ -25,6 +25,7 @@
 
 ### Pseudo code
 
+```
 // Load game example
 
 Available games:		
@@ -44,52 +45,21 @@ var game = GameSession(game)
 GameBoard GameBoard {get; set;}
 
 GameSession() {
-
-​	GameBoard = new GameBoard()
-
+    GameBoard = new GameBoard()
 }
 
 var game = new GameSession().
-
-​						.AddPlayer(new RedPlayer()).
-
-​						.AddPlayer(new BluePlayer())
-
-​						.RunGame()
+    .AddPlayer(new RedPlayer()).
+    .AddPlayer(new BluePlayer())
+    .RunGame()
 
 
 
 RunGame()
-
 {
-
-​	while(true) {
-
-​		NextTurn(); { ... PlayerTurn = PlayerTurn + 1; }
-
-​		...
-
-​			
-
-​	}
-
+    while(true) {
+		    NextTurn(); { ... PlayerTurn = PlayerTurn + 1; }
+		    ...			
+	  }
 }
-| Class RedPlayer                | Interaction   |
-| ------------------------------ | ------------- |
-|                                | Player        |
-
-| abstract Class Player          | Interaction   |
-| ------------------------------ | ------------- |
-| BoardSquare[] squarePath       | BoardPiece    |
-|                                | Game Session  |
-|                                | RedPlayer     |
-|                                | BluePlayer    |
-|                                | YellowPlayer  |
-|                                | GreenPlayer   |
-
-
-| Class GameSession              | Interaction   |
-| ------------------------------ | ------------- |
-|                                | Player        |
-|                                | GameBoard     |
-
+```
