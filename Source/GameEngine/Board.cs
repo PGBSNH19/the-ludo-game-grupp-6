@@ -11,9 +11,13 @@ namespace GameEngine
 
         public Board() => Tiles = new List<Square>();
 
+        public void CreateUtter()
+        {
+
+        }
         public void Create()
         {
-            var tiles = File.ReadAllText("board.txt").Split(';');
+            var tiles = File.ReadAllLines("OuterPath.txt");
             foreach(var tile in tiles)
             {
                 var tileData = tile.Split(',');
@@ -35,5 +39,6 @@ namespace GameEngine
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.BackgroundColor = ConsoleColor.Black;
             });
+
     }
 }
