@@ -11,7 +11,7 @@ namespace GameEngine
 
         public Board() => Tiles = new List<Square>();
 
-        public void CreateUtter()
+        public void CreateOuter()
         {
 
         }
@@ -21,11 +21,8 @@ namespace GameEngine
             foreach(var tile in tiles)
             {
                 var tileData = tile.Split(',');
-                var square = new Square
-                    {
-                        X = Int32.Parse(tileData[0]),
-                        Y = Int32.Parse(tileData[1])
-                    };
+                var square = new Square(new Point(int.Parse(tileData[0]), int.Parse(tileData[1])));
+
                 square.SetColor(tileData[2]);
                 Tiles.Add(square);
             }
@@ -34,7 +31,7 @@ namespace GameEngine
         public void Draw() => Tiles.ForEach(t => {
                 Console.ForegroundColor = ConsoleColor.Black;
                 Console.BackgroundColor = t.BackgroundColor;
-                Console.SetCursorPosition(t.X, t.Y);
+                Console.SetCursorPosition(t.Location.X, t.Location.Y);
                 Console.WriteLine(t.Visual);
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.BackgroundColor = ConsoleColor.Black;

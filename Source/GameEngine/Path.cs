@@ -25,6 +25,6 @@
 
     public class YellowBoardPath : Path
     {
-        public YellowBoardPath() => Points = new Square[_pathSize];
+        public YellowBoardPath() => Points = new Point[_pathSize];
     }
 }

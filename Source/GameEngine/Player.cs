@@ -13,6 +13,7 @@ namespace GameEngine
         public string PlayerName { get; set; }
         [NotMapped]
         public Path BoardPath { get; set; }
+        public Point StartLocation { get; set; }
     }
 
     public class BluePlayer : Player
@@ -20,6 +21,7 @@ namespace GameEngine
         public BluePlayer()
         {
             BoardPath = new BlueBoardPath();
+            StartLocation = new Point(1, 6);
         }
     }
 
@@ -28,6 +30,7 @@ namespace GameEngine
         public GreenPlayer()
         {
             BoardPath = new GreenBoardPath();
+            StartLocation = new Point(13, 8);
         }
     }
 
@@ -36,6 +39,7 @@ namespace GameEngine
         public RedPlayer()
         {
             BoardPath = new RedBoardPath();
+            StartLocation = new Point(8, 1);
         }
     }
 
@@ -44,6 +48,7 @@ namespace GameEngine
         public YellowPlayer()
         {
             BoardPath = new YellowBoardPath();
+            StartLocation = new Point(6, 13);
         }
     }
 }
