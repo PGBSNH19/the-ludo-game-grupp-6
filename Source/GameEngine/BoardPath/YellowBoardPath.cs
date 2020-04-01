@@ -1,6 +1,6 @@
 ﻿namespace GameEngine.BoardPath
 {
-    public class RedBoardPath : IBoardPath
+    public class YellowBoardPath : IBoardPath
     {
         public int BoardPathID { get; set; }
         public BoardSquare[] BoardPath { get; private set; }
