@@ -15,12 +15,15 @@ namespace TheLudoGame
                 .Build();
             var context = new LudoContext(configuration);
 
-            var game = new Game()
-                .AddPlayer(new RedPlayer())
-                .AddPlayer(new BluePlayer())
-                .AddPlayer(new RedPlayer());
+            var game = new Game();
 
-            Console.WriteLine(configuration.GetConnectionString("DefaultConnection"));
+                game
+                .AddPlayer(new RedPlayer { PlayerName = "Player Red" })
+                .AddPlayer(new BluePlayer { PlayerName = "Player Blue" })
+                .AddPlayer(new GreenPlayer { PlayerName = "Player Green" })
+                .AddPlayer(new YellowPlayer { PlayerName = "Player Yellow" })
+                .Start();
+
             Console.ReadLine();
         }
     }

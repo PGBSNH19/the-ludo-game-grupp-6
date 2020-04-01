@@ -9,21 +9,23 @@ namespace GameEngine
     {
         public List<Square> Tiles { get; set; }
 
+        public const int BOARD_WIDTH = 15;
+        public const int BOARD_HEIGHT = 15;
+
         public Board() => Tiles = new List<Square>();
 
-        public void CreateOuter()
-        {
-
-        }
         public void Create()
         {
             var tiles = File.ReadAllLines("OuterPath.txt");
             foreach(var tile in tiles)
             {
                 var tileData = tile.Split(',');
-                var square = new Square(new Point(int.Parse(tileData[0]), int.Parse(tileData[1])));
+                var square = new Square();
 
+                square.X = int.Parse(tileData[0]);
+                square.Y = int.Parse(tileData[1]);
                 square.SetColor(tileData[2]);
+
                 Tiles.Add(square);
             }
         }
@@ -31,11 +33,10 @@ namespace GameEngine
         public void Draw() => Tiles.ForEach(t => {
                 Console.ForegroundColor = ConsoleColor.Black;
                 Console.BackgroundColor = t.BackgroundColor;
-                Console.SetCursorPosition(t.Location.X, t.Location.Y);
+                Console.SetCursorPosition(t.X, t.Y);
                 Console.WriteLine(t.Visual);
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.BackgroundColor = ConsoleColor.Black;
             });
-
     }
 }

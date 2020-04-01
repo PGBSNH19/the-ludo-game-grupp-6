@@ -1,6 +1,9 @@
 ﻿using GameEngine;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace GameEngine
 {
@@ -11,17 +14,27 @@ namespace GameEngine
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PlayerID { get; set; }
         public string PlayerName { get; set; }
+        public List<Piece> Pieces { get; set; }
         [NotMapped]
-        public Path BoardPath { get; set; }
-        public Point StartLocation { get; set; }
+        public int StartX { get; set; }
+        [NotMapped]
+        public int StartY { get; set; }
+
+        internal void PlacePiece(Board board)
+        {
+            board.Tiles.Where(t => t.X == StartX && t.Y == StartY).First().Visual = "X";
+        } 
     }
 
     public class BluePlayer : Player
     {
         public BluePlayer()
         {
-            BoardPath = new BlueBoardPath();
-            StartLocation = new Point(1, 6);
+            StartX = 1;
+            StartY = 6;
+            Pieces = new List<Piece>();
+            while(Pieces.Count() < 4) 
+                Pieces.Add(new Piece { PieceColor = PieceColor.Blue });
         }
     }
 
@@ -29,8 +42,11 @@ namespace GameEngine
     {
         public GreenPlayer()
         {
-            BoardPath = new GreenBoardPath();
-            StartLocation = new Point(13, 8);
+            StartX = 13; 
+            StartY = 8;
+            Pieces = new List<Piece>();
+            while (Pieces.Count() < 4)
+                Pieces.Add(new Piece { PieceColor = PieceColor.Green });
         }
     }
 
@@ -38,8 +54,11 @@ namespace GameEngine
     {
         public RedPlayer()
         {
-            BoardPath = new RedBoardPath();
-            StartLocation = new Point(8, 1);
+            StartX = 8;
+            StartY = 1;
+            Pieces = new List<Piece>();
+            while (Pieces.Count() < 4)
+                Pieces.Add(new Piece { PieceColor = PieceColor.Red });
         }
     }
 
@@ -47,8 +66,11 @@ namespace GameEngine
     {
         public YellowPlayer()
         {
-            BoardPath = new YellowBoardPath();
-            StartLocation = new Point(6, 13);
+            StartX = 6;
+            StartY = 13;
+            Pieces = new List<Piece>();
+            while (Pieces.Count() < 4)
+                Pieces.Add(new Piece { PieceColor = PieceColor.Yellow });
         }
     }
 }
