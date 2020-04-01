@@ -1,4 +1,7 @@
 ﻿using System;
+using System.IO;
+using GameEngine;
+using Microsoft.Extensions.Configuration;
 
 namespace TheLudoGame
 {
@@ -6,7 +9,14 @@ namespace TheLudoGame
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Welcome to the ludo game");
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+            var game = new Game();
+            Console.WriteLine(configuration.GetConnectionString("DefaultConnection"));
+            Console.ReadLine();
         }
     }
 }

@@ -1,12 +1,18 @@
-﻿using GameEngine.BoardPath;
+﻿using GameEngine;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GameEngine
 {
+    [Table("Player")]
     public abstract class Player
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PlayerID { get; set; }
         public string PlayerName { get; set; }
-        public IBoardPath BoardPath { get; set; }
+        [NotMapped]
+        public BoardPath BoardPath { get; set; }
     }
 
     public class BluePlayer : Player
