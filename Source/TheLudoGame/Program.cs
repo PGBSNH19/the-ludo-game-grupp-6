@@ -13,6 +13,7 @@ namespace TheLudoGame
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
                 .Build();
+            var context = new LudoContext(configuration);
 
             var game = new Game();
             Console.WriteLine(configuration.GetConnectionString("DefaultConnection"));

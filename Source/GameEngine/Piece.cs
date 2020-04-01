@@ -4,8 +4,8 @@ using System.Text;
 
 namespace GameEngine
 {
-    public class BoardSquare : Point
+    public class Piece
     {
-        public int BoardSquareID { get; set; }
+        public int BoardPieceID { get; set; }
     }
 }

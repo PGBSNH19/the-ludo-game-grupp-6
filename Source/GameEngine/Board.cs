@@ -6,6 +6,9 @@ namespace GameEngine
 {
     public class Board
     {
-
+        public void Draw()
+        {
+            
+        }
     }
 }
