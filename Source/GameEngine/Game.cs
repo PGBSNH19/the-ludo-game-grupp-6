@@ -21,11 +21,30 @@ namespace GameEngine
             Board = new Board();
             Players = new List<Player>();
             Board.Create();
-            Board.Draw();
-            Console.ReadLine();
         }
 
         public Game AddPlayer(Player player)
+        {
+            ValidateNewPlayerEntry(player);
+            AddPieces(player);
+            Players.Add(player);
+
+            return this;
+        }
+
+        private void AddPieces(Player owner)
+        {
+            for(int i = 0; i < 4; i++)
+            {
+                Board.Pieces.Add(new Piece { Player = owner });
+            }
+        }
+
+        /// <summary>
+        /// Throws Exception if player of Type T already exists
+        /// Throws Exception if Player count more than 4
+        /// </summary>
+        private void ValidateNewPlayerEntry(Player player)
         {
             if (Players.Count == 4)
             {
@@ -35,37 +54,57 @@ namespace GameEngine
             {
                 throw new ArgumentException("Player of type " + player.GetType() + " already exists.");
             }
-
-            Players.Add(player);
-
-            return this;
         }
 
         public Game Start()
         {
-            int floodControl = 0;
+            ReadyStateCheck();
+            Board.Draw();
             while (true)
             {
-                // Move this shit somewhere else
-                if(floodControl == 4)
-                {
-                    Console.Clear();
-                    floodControl = 0;
-                    GameConsole.Reset();
-                }
-                Board.Draw();
-
                 var activePlayer = Players.First();
-                int diceRoll = Dice.Roll();
-                GameConsole.ConsolePrint($"{activePlayer.PlayerName} rolls a {diceRoll}");
+                Action(activePlayer, Dice.Roll());
 
 
-                activePlayer.PlacePiece(Board);
-
+                Board.Draw();
+                
                 NextTurn();
-                floodControl++;
                 Console.ReadLine();
             }
+        }
+
+        private void Action(Player activePlayer, int result)
+        {
+            GameConsole.ConsolePrint($"{activePlayer.ColorName} rolls a {result}");
+
+            if (result == 6 && Board.Pieces.Any(p => !p.InPlay && p.Player == activePlayer))
+            {
+                // Place a piece
+                GameConsole.ConsolePrint($"{activePlayer.ColorName} puts a Piece into play");
+                Board.PlacePiece(activePlayer);
+            }
+            else if (Board.Pieces.Any(p => p.InPlay && p.Player == activePlayer))
+            {
+                // Move a piece
+                GameConsole.ConsolePrint($"{activePlayer.ColorName} moves a piece");
+                Board.MovePiece(activePlayer, result);
+            }
+            else
+            {
+                // No action available
+                GameConsole.ConsolePrint($"{activePlayer.ColorName} was unable to take action");
+            }
+        }
+
+        /// <summary>
+        /// Throws exception if less than 2 players or more than 4 players
+        /// </summary>
+        private void ReadyStateCheck()
+        {
+            if(Players.Count() < 2)
+                throw new Exception("More than one player is necessary to start.");
+            if (Players.Count() > 4)
+                throw new Exception("Less than four players is necessary to start.");
         }
 
         /// <summary>
@@ -74,9 +113,6 @@ namespace GameEngine
         /// </summary>
         private void NextTurn() => Players = Players.Skip(1).Concat(Players.Take(1)).ToList();
 
-        private bool PlayerOfTypeExists(Type playerType)
-        {
-            return Players.Any(x => x.GetType() == playerType);
-        }
+        private bool PlayerOfTypeExists(Type playerType) => Players.Any(x => x.GetType() == playerType);
     }
 }

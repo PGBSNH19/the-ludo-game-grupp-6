@@ -13,17 +13,30 @@ namespace GameEngine
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PlayerID { get; set; }
-        public string PlayerName { get; set; }
-        public List<Piece> Pieces { get; set; }
+        public string Name { get; set; }
         [NotMapped]
         public int StartX { get; set; }
         [NotMapped]
         public int StartY { get; set; }
+        [NotMapped]
+        public PlayerColor PlayerColor;
+        [NotMapped]
+        public string ColorName 
+        { 
+            get => GetType().ToString().Substring(11); 
+        }
 
-        internal void PlacePiece(Board board)
+        public ConsoleColor GetColor()
         {
-            board.Tiles.Where(t => t.X == StartX && t.Y == StartY).First().Visual = "X";
-        } 
+            return PlayerColor switch
+            {
+                PlayerColor.Red => ConsoleColor.Red,
+                PlayerColor.Blue => ConsoleColor.Blue,
+                PlayerColor.Green => ConsoleColor.Green,
+                PlayerColor.Yellow => ConsoleColor.DarkYellow,
+                _ => ConsoleColor.White
+            };
+        }
     }
 
     public class BluePlayer : Player
@@ -32,9 +45,7 @@ namespace GameEngine
         {
             StartX = 1;
             StartY = 6;
-            Pieces = new List<Piece>();
-            while(Pieces.Count() < 4) 
-                Pieces.Add(new Piece { PieceColor = PieceColor.Blue });
+            PlayerColor = PlayerColor.Blue;
         }
     }
 
@@ -44,9 +55,7 @@ namespace GameEngine
         {
             StartX = 13; 
             StartY = 8;
-            Pieces = new List<Piece>();
-            while (Pieces.Count() < 4)
-                Pieces.Add(new Piece { PieceColor = PieceColor.Green });
+            PlayerColor = PlayerColor.Green;
         }
     }
 
@@ -56,9 +65,7 @@ namespace GameEngine
         {
             StartX = 8;
             StartY = 1;
-            Pieces = new List<Piece>();
-            while (Pieces.Count() < 4)
-                Pieces.Add(new Piece { PieceColor = PieceColor.Red });
+            PlayerColor = PlayerColor.Red;
         }
     }
 
@@ -68,9 +75,7 @@ namespace GameEngine
         {
             StartX = 6;
             StartY = 13;
-            Pieces = new List<Piece>();
-            while (Pieces.Count() < 4)
-                Pieces.Add(new Piece { PieceColor = PieceColor.Yellow });
+            PlayerColor = PlayerColor.Yellow;
         }
     }
 }

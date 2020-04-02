@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GameEngine
 {
-    public class Square : NewPoint
+    public class Tile : Point
     {
         public int BoardSquareID { get; set; }
         public string Visual { get; set; }
@@ -12,10 +12,7 @@ namespace GameEngine
 
         //public Point Location { get; set; }
 
-        public Square() 
-        {
-            Visual = " ";
-        }
+        public Tile() => Visual = " ";
 
         public void SetColor(string colorCode)
         {

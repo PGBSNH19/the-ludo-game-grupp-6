@@ -9,19 +9,20 @@ namespace TheLudoGame
     {
         static void Main(string[] args)
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.CursorVisible = false;
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
                 .Build();
+
             var context = new LudoContext(configuration);
 
-            var game = new Game();
-
-                game
-                .AddPlayer(new RedPlayer { PlayerName = "Player Red" })
-                .AddPlayer(new BluePlayer { PlayerName = "Player Blue" })
-                .AddPlayer(new GreenPlayer { PlayerName = "Player Green" })
-                .AddPlayer(new YellowPlayer { PlayerName = "Player Yellow" })
+            var game = new Game()
+                .AddPlayer(new RedPlayer { Name = "Player Red" })
+                .AddPlayer(new BluePlayer { Name = "Player Blue" })
+                .AddPlayer(new GreenPlayer { Name = "Player Green" })
+                .AddPlayer(new YellowPlayer { Name = "Player Yellow" })
                 .Start();
 
             Console.ReadLine();

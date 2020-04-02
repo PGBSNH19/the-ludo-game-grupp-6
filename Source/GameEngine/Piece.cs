@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GameEngine
 {
-    public enum PieceColor
+    public enum PlayerColor
     {
         Red,
         Blue,
@@ -12,23 +12,25 @@ namespace GameEngine
         Yellow
     }
 
-    public class Piece
+    public class Piece : Point
     {
         public int BoardPieceID { get; set; }
-        public PieceColor PieceColor { get; set; }
-        public int X { get; set; }
-        public int Y { get; set; }
+        public Player Player { get; set; }
+        public string Visual { get; set; } = "◙";
+        public bool InPlay { get => X != 0 && Y != 0; }
 
-        public ConsoleColor GetColor()
+        public Piece() => KickOut();
+
+        public void KickOut()
         {
-            return PieceColor switch
-            {
-                PieceColor.Red => ConsoleColor.Red,
-                PieceColor.Blue => ConsoleColor.Blue,
-                PieceColor.Green => ConsoleColor.Green,
-                PieceColor.Yellow => ConsoleColor.DarkYellow,
-                _ => ConsoleColor.White
-            };
+            X = 0;
+            Y = 0;
+        }
+
+        public void Move(int x, int y)
+        {
+            X = x;
+            Y = y;
         }
     }
 }
