@@ -22,7 +22,7 @@ namespace GameEngine
             GameConsole = new GameConsole();
             Board = new Board();
             Players = new List<Player>();
-            Board.Create();
+            Board.Build();
         }
 
         public Game AddPlayer(Player player)

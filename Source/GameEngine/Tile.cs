@@ -22,7 +22,7 @@ namespace GameEngine
                 "G" => ConsoleColor.Green,
                 "B" => ConsoleColor.Blue,
                 "Y" => ConsoleColor.DarkYellow,
-                "W" => ConsoleColor.White,
+                "W" => ConsoleColor.DarkGray,
                 _ => ConsoleColor.Black,
             };
         }

@@ -12,39 +12,48 @@ namespace GameEngine
         public List<Tile> Tiles { get; set; }
         public List<Piece> Pieces { get; set; }
 
+        public OuterPath OuterPath { get; set; }
+        public RedInnerPath RedPath { get; set; }
+        public BlueInnerPath BluePath { get; set; }
+        public GreenInnerPath GreenPath { get; set; }
+        public YellowInnerPath YellowPath { get; set; }
+
         private readonly int PADDING_LEFT = 5;
         private readonly int PADDING_TOP = 2;
 
-        public void Create()
+        public void Build()
         {
             Pieces = new List<Piece>();
-            Tiles = new List<Tile>();
-            var tiles = File.ReadAllLines("Paths/outer_path_coords.txt");
-            foreach(var tile in tiles)
-            {
-                var tileData = tile.Split(',');
-                var square = new Tile
-                {
-                    X = int.Parse(tileData[0]),
-                    Y = int.Parse(tileData[1])
-                };
-                square.SetColor(tileData[2]);
+            //Tiles = new List<Tile>();
 
-                Tiles.Add(square);
-            }
+            OuterPath = (OuterPath)new OuterPath().Build();
+            RedPath = (RedInnerPath)new RedInnerPath().Build();
+            BluePath = (BlueInnerPath)new BlueInnerPath().Build();
+            GreenPath = (GreenInnerPath)new GreenInnerPath().Build();
+            YellowPath = (YellowInnerPath)new YellowInnerPath().Build();
+
+            //var pathData = File.ReadAllLines("Paths/outer_path_coords.txt");
+            //foreach(var data in pathData)
+            //{
+            //    var tileData = data.Split(',');
+            //    var tile = new Tile
+            //    {
+            //        X = int.Parse(tileData[0]),
+            //        Y = int.Parse(tileData[1])
+            //    };
+            //    tile.SetColor(tileData[2]);
+
+            //    Tiles.Add(tile);
+            //}
         }
 
         public void Draw() 
         {
-            Tiles.ForEach(t =>
-            {
-                Console.ForegroundColor = ConsoleColor.Black;
-                Console.BackgroundColor = t.BackgroundColor;
-                Console.SetCursorPosition(t.X + PADDING_LEFT, t.Y + PADDING_TOP);
-                Console.WriteLine(t.Visual);
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.BackgroundColor = ConsoleColor.Black;
-            });
+            DrawPath(OuterPath);
+            DrawPath(RedPath);
+            DrawPath(BluePath);
+            DrawPath(GreenPath);
+            DrawPath(YellowPath);
             Pieces.Where(p => p.InPlay).ToList().ForEach(p =>
             {
                 Console.ForegroundColor = p.Player.GetColor();
@@ -56,17 +65,32 @@ namespace GameEngine
             });
         }
 
+        private void DrawPath(Path pathObj)
+        {
+            pathObj.Tiles.ForEach(t =>
+            {
+                Console.ForegroundColor = ConsoleColor.Black;
+                Console.BackgroundColor = t.BackgroundColor;
+                Console.SetCursorPosition(t.X + PADDING_LEFT, t.Y + PADDING_TOP);
+                Console.WriteLine(t.Visual);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.BackgroundColor = ConsoleColor.Black;
+            });
+        }
+
         public void MovePiece(Player player, int steps, GameConsole gc)
         {
+            var path = OuterPath.Tiles;
+
             var piece = Pieces.Where(p => p.Player == player).FirstOrDefault();
-            var currentTile = Tiles.First(t => t.X == piece.X && t.Y == piece.Y);
+            var currentTile = path.First(t => t.Equals(piece));
             
-            var desiredLocationIndex = Tiles.IndexOf(currentTile) + steps;
+            var desiredLocationIndex = path.IndexOf(currentTile) + steps;
 
-            if (desiredLocationIndex >= Tiles.Count)
-                desiredLocationIndex -= Tiles.Count;
+            if (desiredLocationIndex >= path.Count)
+                desiredLocationIndex -= path.Count;
 
-            piece.Move(Tiles[desiredLocationIndex].X, Tiles[desiredLocationIndex].Y, steps);
+            piece.Move(path[desiredLocationIndex].X, path[desiredLocationIndex].Y, steps);
             gc.ConsolePrint(" ");
             gc.ConsolePrint("Total of " + piece.Steps + " steps");
         }
