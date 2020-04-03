@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace GameEngine
 {
@@ -28,16 +30,24 @@ namespace GameEngine
             ValidateNewPlayerEntry(player);
             AddPieces(player);
             Players.Add(player);
-
+            GameConsole.ConsolePrint($"{player.ColorName} enters game");
+            GameConsole.ConsolePrint($" ");
             return this;
         }
 
+
+        /// <summary>
+        /// For now all players only have 1 piece
+        /// </summary>
+        /// <param name="owner"></param>
         private void AddPieces(Player owner)
         {
-            for(int i = 0; i < 4; i++)
-            {
-                Board.Pieces.Add(new Piece { Player = owner });
-            }
+            //for(int i = 0; i < 4; i++)
+            //{
+            var piece = new Piece { Player = owner };
+            piece.Enter();
+            Board.Pieces.Add(new Piece { Player = owner });
+            //}
         }
 
         /// <summary>
@@ -65,14 +75,13 @@ namespace GameEngine
                 var activePlayer = Players.First();
                 Action(activePlayer, Dice.Roll());
 
-
                 Board.Draw();
                 
                 NextTurn();
                 Console.ReadLine();
             }
         }
-
+        
         private void Action(Player activePlayer, int result)
         {
             GameConsole.ConsolePrint($"{activePlayer.ColorName} rolls a {result}");
@@ -80,19 +89,19 @@ namespace GameEngine
             if (result == 6 && Board.Pieces.Any(p => !p.InPlay && p.Player == activePlayer))
             {
                 // Place a piece
-                GameConsole.ConsolePrint($"{activePlayer.ColorName} puts a Piece into play");
+                GameConsole.ConsolePrint($"\t{activePlayer.ColorName} puts a Piece into play");
                 Board.PlacePiece(activePlayer);
             }
             else if (Board.Pieces.Any(p => p.InPlay && p.Player == activePlayer))
             {
                 // Move a piece
-                GameConsole.ConsolePrint($"{activePlayer.ColorName} moves a piece");
-                Board.MovePiece(activePlayer, result);
+                GameConsole.ConsolePrint($"\t{activePlayer.ColorName} moves a piece");
+                Board.MovePiece(activePlayer, result, GameConsole);
             }
             else
             {
                 // No action available
-                GameConsole.ConsolePrint($"{activePlayer.ColorName} was unable to take action");
+                GameConsole.ConsolePrint($"\t{activePlayer.ColorName} was unable to take action");
             }
         }
 
@@ -101,8 +110,8 @@ namespace GameEngine
         /// </summary>
         private void ReadyStateCheck()
         {
-            if(Players.Count() < 2)
-                throw new Exception("More than one player is necessary to start.");
+            //if(Players.Count() < 2)
+            //    throw new Exception("More than one player is necessary to start.");
             if (Players.Count() > 4)
                 throw new Exception("Less than four players is necessary to start.");
         }

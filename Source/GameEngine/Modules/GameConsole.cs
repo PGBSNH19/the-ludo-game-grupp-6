@@ -6,28 +6,54 @@ namespace GameEngine.Modules
 {
     public class GameConsole
     {
-        private int linesCount;
+        private int linesCount = 0;
 
-        private readonly int CONSOLE_CAPACITY = 10;
+        private readonly int CONSOLE_CAPACITY = 24;
+
         private readonly int PADDING_LEFT = 30;
+        private readonly int PADDING_TOP = 3;
 
-        public GameConsole() => Reset();
+        private readonly int WIDTH = 50;
+        private readonly int HEIGHT = 25;
+
+        public GameConsole() => Clear();
 
         public void ConsolePrint(string data)
         {
-            FloodControl();
-            Console.SetCursorPosition(PADDING_LEFT, linesCount);
+            if(linesCount > CONSOLE_CAPACITY - 1)
+                Clear();
+
+            Console.SetCursorPosition(PADDING_LEFT, linesCount + PADDING_TOP);
             Console.WriteLine(data);
             linesCount++;
         }
 
-        private void FloodControl()
+        public void DrawBorder()
         {
-            if(linesCount > CONSOLE_CAPACITY - 1)
+            Console.BackgroundColor = ConsoleColor.DarkGray;
+            for (int x = 0; x < WIDTH; x++)
             {
-                Console.Clear();
-                Reset();
+                Console.SetCursorPosition((PADDING_LEFT - 2) + x, 1);
+                Console.Write(" ");
+                Console.SetCursorPosition((PADDING_LEFT - 2) + x, HEIGHT + PADDING_TOP);
+                Console.Write(" ");
             }
+            for (int y = 0; y < HEIGHT + PADDING_TOP; y++)
+            {
+                Console.SetCursorPosition((PADDING_LEFT - 2), y + 1);
+                Console.Write(" ");
+                Console.SetCursorPosition((PADDING_LEFT - 2) + WIDTH, y + 1);
+                Console.Write(" ");
+            }
+
+            Console.BackgroundColor = ConsoleColor.Black;
+        }
+
+        private void Clear()
+        {
+            Console.Clear();
+            DrawBorder();
+            Reset();
         }
 
         internal void Reset() => linesCount = 0;

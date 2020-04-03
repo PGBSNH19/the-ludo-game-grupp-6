@@ -9,7 +9,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="OuterPath.txt">
+    <None Update="Paths\blue_path_coords.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Paths\red_path_coords.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Paths\green_path_coords.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Paths\yellow_path_coords.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Paths\outer_path_coords.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

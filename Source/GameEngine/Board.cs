@@ -19,7 +19,7 @@ namespace GameEngine
         {
             Pieces = new List<Piece>();
             Tiles = new List<Tile>();
-            var tiles = File.ReadAllLines("OuterPath.txt");
+            var tiles = File.ReadAllLines("Paths/outer_path_coords.txt");
             foreach(var tile in tiles)
             {
                 var tileData = tile.Split(',');
@@ -51,20 +51,24 @@ namespace GameEngine
                 Console.BackgroundColor = ConsoleColor.White;
                 Console.SetCursorPosition(p.X + PADDING_LEFT, p.Y + PADDING_TOP);
                 Console.WriteLine(p.Visual);
-                Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.White;
+                Console.BackgroundColor = ConsoleColor.Black;
             });
         }
 
-        public void MovePiece(Player player, int steps)
+        public void MovePiece(Player player, int steps, GameConsole gc)
         {
             var piece = Pieces.Where(p => p.Player == player).FirstOrDefault();
             var currentTile = Tiles.First(t => t.X == piece.X && t.Y == piece.Y);
             
             var desiredLocationIndex = Tiles.IndexOf(currentTile) + steps;
 
-            piece.Move(Tiles[desiredLocationIndex].X, Tiles[desiredLocationIndex].Y);
+            if (desiredLocationIndex >= Tiles.Count)
+                desiredLocationIndex -= Tiles.Count;
 
+            piece.Move(Tiles[desiredLocationIndex].X, Tiles[desiredLocationIndex].Y, steps);
+            gc.ConsolePrint(" ");
+            gc.ConsolePrint("Total of " + piece.Steps + " steps");
         }
 
         public void PlacePiece(Player activePlayer)
