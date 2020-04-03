@@ -3,9 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace GameEngine
 {
@@ -22,7 +19,6 @@ namespace GameEngine
             GameConsole = new GameConsole();
             Board = new Board();
             Players = new List<Player>();
-            Board.Build();
         }
 
         public Game AddPlayer(Player player)
@@ -69,6 +65,7 @@ namespace GameEngine
         public Game Start()
         {
             ReadyStateCheck();
+            Board.Build(Players);
             Board.Draw();
             while (true)
             {
@@ -113,7 +110,7 @@ namespace GameEngine
             //if(Players.Count() < 2)
             //    throw new Exception("More than one player is necessary to start.");
             if (Players.Count() > 4)
-                throw new Exception("Less than four players is necessary to start.");
+                throw new Exception("Four players or less is necessary to start.");
         }
 
         /// <summary>

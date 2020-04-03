@@ -1,15 +1,12 @@
 ﻿using GameEngine.Modules;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace GameEngine
 {
     public class Board
     {
-        public List<Tile> Tiles { get; set; }
         public List<Piece> Pieces { get; set; }
 
         public OuterPath OuterPath { get; set; }
@@ -17,34 +14,30 @@ namespace GameEngine
         public BlueInnerPath BluePath { get; set; }
         public GreenInnerPath GreenPath { get; set; }
         public YellowInnerPath YellowPath { get; set; }
+        public List<Player> Players { get; set; }
 
         private readonly int PADDING_LEFT = 5;
         private readonly int PADDING_TOP = 2;
 
-        public void Build()
+        public Board()
         {
             Pieces = new List<Piece>();
-            //Tiles = new List<Tile>();
+        }
 
+        public void Build(List<Player> players)
+        {
             OuterPath = (OuterPath)new OuterPath().Build();
             RedPath = (RedInnerPath)new RedInnerPath().Build();
             BluePath = (BlueInnerPath)new BlueInnerPath().Build();
             GreenPath = (GreenInnerPath)new GreenInnerPath().Build();
             YellowPath = (YellowInnerPath)new YellowInnerPath().Build();
 
-            //var pathData = File.ReadAllLines("Paths/outer_path_coords.txt");
-            //foreach(var data in pathData)
-            //{
-            //    var tileData = data.Split(',');
-            //    var tile = new Tile
-            //    {
-            //        X = int.Parse(tileData[0]),
-            //        Y = int.Parse(tileData[1])
-            //    };
-            //    tile.SetColor(tileData[2]);
-
-            //    Tiles.Add(tile);
-            //}
+            players.ForEach(p => {
+                if (p.GetType().ToString() == "GameEngine.BluePlayer")
+                {
+                    p.InnerPath = BluePath;
+                }
+            });
         }
 
         public void Draw() 
@@ -80,19 +73,32 @@ namespace GameEngine
 
         public void MovePiece(Player player, int steps, GameConsole gc)
         {
-            var path = OuterPath.Tiles;
-
             var piece = Pieces.Where(p => p.Player == player).FirstOrDefault();
-            var currentTile = path.First(t => t.Equals(piece));
-            
-            var desiredLocationIndex = path.IndexOf(currentTile) + steps;
 
-            if (desiredLocationIndex >= path.Count)
-                desiredLocationIndex -= path.Count;
+            if(piece.Steps > 49)
+            {
+                var path = player.GetColor();
+            }
 
-            piece.Move(path[desiredLocationIndex].X, path[desiredLocationIndex].Y, steps);
-            gc.ConsolePrint(" ");
-            gc.ConsolePrint("Total of " + piece.Steps + " steps");
+            else if(piece.Steps + steps > 49)
+            {
+
+            }
+
+            else
+            {
+                var path = OuterPath.Tiles;
+                var currentTile = path.First(t => t.Equals(piece));
+
+                var desiredLocationIndex = path.IndexOf(currentTile) + steps;
+
+                if (desiredLocationIndex >= path.Count)
+                    desiredLocationIndex -= path.Count;
+
+                piece.Move(path[desiredLocationIndex].X, path[desiredLocationIndex].Y, steps);
+                gc.ConsolePrint(" ");
+                gc.ConsolePrint("Total of " + piece.Steps + " steps");
+            }
         }
 
         public void PlacePiece(Player activePlayer)

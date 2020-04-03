@@ -22,7 +22,9 @@ namespace GameEngine
         [NotMapped]
         public PlayerColor PlayerColor;
         [NotMapped]
-        public string ColorName => GetType().ToString().Substring(11); 
+        public string ColorName => GetType().ToString().Substring(11);
+        [NotMapped]
+        public Path InnerPath { get; set; }
 
         public ConsoleColor GetColor()
         {
@@ -35,7 +37,6 @@ namespace GameEngine
                 _ => ConsoleColor.White
             };
         }
-
     }
 
     public class BluePlayer : Player
