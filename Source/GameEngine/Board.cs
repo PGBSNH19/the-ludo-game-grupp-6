@@ -75,27 +75,31 @@ namespace GameEngine
         {
             var piece = Pieces.Where(p => p.Player == player).FirstOrDefault();
 
-            if(piece.Steps > 49)
+            if(piece.Steps > 50)
             {
+                // Already in InnerPath
                 var path = player.GetColor();
             }
-
-            else if(piece.Steps + steps > 49)
+            else if(piece.Steps + steps > 50)
             {
-
+                // Steps walks into InnerPath
+                var path = player.InnerPath;
+                var nextLocationIndex = piece.Steps + steps - 50;
+                
+                piece.Move(path.Tiles[nextLocationIndex].X, path.Tiles[nextLocationIndex].Y, steps);
             }
-
             else
             {
-                var path = OuterPath.Tiles;
-                var currentTile = path.First(t => t.Equals(piece));
+                // Move along OuterPath
+                var path = OuterPath;
+                var currentTile = path.Tiles.First(t => t.Equals(piece));
 
-                var desiredLocationIndex = path.IndexOf(currentTile) + steps;
+                var nextLocationIndex = path.Tiles.IndexOf(currentTile) + steps;
 
-                if (desiredLocationIndex >= path.Count)
-                    desiredLocationIndex -= path.Count;
+                if (nextLocationIndex >= path.Tiles.Count)
+                    nextLocationIndex -= path.Tiles.Count;
 
-                piece.Move(path[desiredLocationIndex].X, path[desiredLocationIndex].Y, steps);
+                piece.Move(path.Tiles[nextLocationIndex].X, path.Tiles[nextLocationIndex].Y, steps);
                 gc.ConsolePrint(" ");
                 gc.ConsolePrint("Total of " + piece.Steps + " steps");
             }
