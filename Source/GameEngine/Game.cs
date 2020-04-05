@@ -41,7 +41,7 @@ namespace GameEngine
             //for(int i = 0; i < 4; i++)
             //{
             var piece = new Piece { Player = owner };
-            piece.Enter();
+            piece.Reset();
             Board.Pieces.Add(new Piece { Player = owner });
             //}
         }
@@ -66,6 +66,7 @@ namespace GameEngine
         {
             ReadyStateCheck();
             Board.Build(Players);
+            Board.GameConsole = GameConsole;
             Board.Draw();
             while (true)
             {
@@ -93,7 +94,7 @@ namespace GameEngine
             {
                 // Move a piece
                 GameConsole.ConsolePrint($"\t{activePlayer.ColorName} moves a piece");
-                Board.MovePiece(activePlayer, result, GameConsole);
+                Board.MovePiece(activePlayer, result);
             }
             else
             {

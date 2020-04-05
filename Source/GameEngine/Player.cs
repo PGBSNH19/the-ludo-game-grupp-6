@@ -14,6 +14,7 @@ namespace GameEngine
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PlayerID { get; set; }
         public string Name { get; set; }
+        public int Score { get; set; } = 0;
 
         [NotMapped]
         public int StartX { get; set; }

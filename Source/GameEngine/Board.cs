@@ -1,6 +1,7 @@
 ﻿using GameEngine.Modules;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace GameEngine
@@ -15,6 +16,9 @@ namespace GameEngine
         public GreenInnerPath GreenPath { get; set; }
         public YellowInnerPath YellowPath { get; set; }
         public List<Player> Players { get; set; }
+
+        [NotMapped]
+        public GameConsole GameConsole { get; set; }
 
         private readonly int PADDING_LEFT = 5;
         private readonly int PADDING_TOP = 2;
@@ -33,9 +37,20 @@ namespace GameEngine
             YellowPath = (YellowInnerPath)new YellowInnerPath().Build();
 
             players.ForEach(p => {
-                if (p.GetType().ToString() == "GameEngine.BluePlayer")
+                switch(p.GetType().ToString().Substring(11))
                 {
-                    p.InnerPath = BluePath;
+                    case "RedPlayer":
+                        p.InnerPath = RedPath;
+                        break;
+                    case "BluePlayer":
+                        p.InnerPath = BluePath;
+                        break;
+                    case "GreenPlayer":
+                        p.InnerPath = GreenPath;
+                        break;
+                    case "YellowPlayer":
+                        p.InnerPath = YellowPath;
+                        break;
                 }
             });
         }
@@ -71,37 +86,32 @@ namespace GameEngine
             });
         }
 
-        public void MovePiece(Player player, int steps, GameConsole gc)
+        public void MovePiece(Player player, int steps)
         {
             var piece = Pieces.Where(p => p.Player == player).FirstOrDefault();
+            Path path = null;
 
-            if(piece.Steps > 50)
+            // Already in InnerPath
+            if (piece.Steps > 50)
             {
-                // Already in InnerPath
-                var path = player.GetColor();
+                path = player.InnerPath;
+
+                var currentLocationIndex = path.Tiles
+                    .IndexOf(path.Tiles.First(t => t.Equals(piece)));
+
+                piece.MoveWithinInnerPath(currentLocationIndex, path, steps);
             }
-            else if(piece.Steps + steps > 50)
+            // Enter InnerPath
+            else if (piece.Steps + steps > 50)
             {
-                // Steps walks into InnerPath
-                var path = player.InnerPath;
-                var nextLocationIndex = piece.Steps + steps - 50;
-                
-                piece.Move(path.Tiles[nextLocationIndex].X, path.Tiles[nextLocationIndex].Y, steps);
+                path = player.InnerPath;
+                piece.MoveIntoInnerPath(path, steps);
             }
+            // Move along OuterPath
             else
             {
-                // Move along OuterPath
-                var path = OuterPath;
-                var currentTile = path.Tiles.First(t => t.Equals(piece));
-
-                var nextLocationIndex = path.Tiles.IndexOf(currentTile) + steps;
-
-                if (nextLocationIndex >= path.Tiles.Count)
-                    nextLocationIndex -= path.Tiles.Count;
-
-                piece.Move(path.Tiles[nextLocationIndex].X, path.Tiles[nextLocationIndex].Y, steps);
-                gc.ConsolePrint(" ");
-                gc.ConsolePrint("Total of " + piece.Steps + " steps");
+                path = OuterPath;
+                piece.MoveWithinOuterPath(path, steps);
             }
         }
 
