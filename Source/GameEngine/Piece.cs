@@ -54,19 +54,7 @@ namespace GameEngine
             Steps += steps;
         }
 
-        private void TryMove(int nextLocationIndex, Path path, int steps)
-        {
-            try
-            {
-                Move(path.Tiles[nextLocationIndex].X, path.Tiles[nextLocationIndex].Y, steps);
-            }
-            catch
-            {
-                Move(path.Tiles[path.Tiles.Count - 1].X, path.Tiles[path.Tiles.Count - 1].Y, steps);
-            }
-        }
-
-        internal void MoveWithinInnerPath(int currentLocationIndex, Path path, int steps)
+        public void MoveWithinInnerPath(int currentLocationIndex, Path path, int steps)
         {
             var pathLength = path.Tiles.Count;
             int nextLocationIndex;
@@ -79,26 +67,29 @@ namespace GameEngine
                 PassGoal();
                 return;
             }
-            else if (currentLocationIndex + steps > pathLength)
+            else if (currentLocationIndex + steps > pathLength - 1)
             {
                 var diff = currentLocationIndex + steps - (pathLength - 1);
-                nextLocationIndex = (pathLength - 1) - diff;
+                nextLocationIndex = (pathLength - 1) - Math.Abs(diff);
+                if (nextLocationIndex < 1) nextLocationIndex = 0;
             }
             else
             {
                 nextLocationIndex = currentLocationIndex + steps;
             }
 
-            TryMove(nextLocationIndex, path, steps);
+            Move(path.Tiles[nextLocationIndex].X, path.Tiles[nextLocationIndex].Y, steps);
         }
 
-        internal void MoveIntoInnerPath(Path path, int steps)
+        public void MoveIntoInnerPath(Path path, int steps)
         {
             int nextLocationIndex = Steps + (steps - 1) - 50;
-            TryMove(nextLocationIndex, path, steps);
+            if (nextLocationIndex > path.Tiles.Count - 1)
+                nextLocationIndex--;
+            Move(path.Tiles[nextLocationIndex].X, path.Tiles[nextLocationIndex].Y, steps);
         }
 
-        internal void MoveWithinOuterPath(Path path, int steps)
+        public void MoveWithinOuterPath(Path path, int steps)
         {
             var currentTile = path.Tiles.First(t => t.Equals(this));
 
@@ -107,7 +98,7 @@ namespace GameEngine
             if (nextLocationIndex >= path.Tiles.Count)
                 nextLocationIndex -= path.Tiles.Count;
 
-            TryMove(nextLocationIndex, path, steps);
+            Move(path.Tiles[nextLocationIndex].X, path.Tiles[nextLocationIndex].Y, steps);
         }
     }
 }
