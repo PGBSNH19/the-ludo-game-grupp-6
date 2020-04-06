@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using TheLudoGame;
 
 namespace GameEngine
 {
@@ -21,16 +22,16 @@ namespace GameEngine
         public GameConsole GameConsole { get; set; }
 
         [NotMapped]
-        List<IPlayer> Players { get; set; }
+        public List<Player> Players { get; set; }
 
         public Game()
         {
             GameConsole = new GameConsole();
             Board = new Board();
-            Players = new List<IPlayer>();
+            Players = new List<Player>();
         }
 
-        public Game AddPlayer(IPlayer player)
+        public Game AddPlayer(Player player)
         {
             ValidateNewPlayerEntry(player);
             AddPieces(player);
@@ -40,9 +41,9 @@ namespace GameEngine
             return this;
         }
 
-        public IPlayer GetWinner()
+        public Player GetWinner()
         {
-            IPlayer player = Players.FirstOrDefault(x => x.Score == 4);
+            Player player = Players.FirstOrDefault(x => x.Score == 4);
             return player;
         }
 
@@ -50,7 +51,7 @@ namespace GameEngine
         /// For now all players only have 1 piece
         /// </summary>
         /// <param name="owner"></param>
-        private void AddPieces(IPlayer owner)
+        private void AddPieces(Player owner)
         {
             //for(int i = 0; i < 4; i++)
             //{
@@ -64,13 +65,13 @@ namespace GameEngine
         /// Throws Exception if player of Type T already exists
         /// Throws Exception if Player count more than 4
         /// </summary>
-        private void ValidateNewPlayerEntry(IPlayer player)
+        private void ValidateNewPlayerEntry(Player player)
         {
             if (Players.Count == 4)
             {
                 throw new ArgumentOutOfRangeException("Can't add more than four players.");
             }
-            else if (PlayerOfTypeExists(player.GetType()))
+            else if (PlayerOfTypeExists(player.PlayerType))
             {
                 throw new ArgumentException("Player of type " + player.GetType() + " already exists.");
             }
@@ -89,7 +90,7 @@ namespace GameEngine
 
                 Board.Draw();
 
-                IPlayer winner = GetWinner();
+                Player winner = GetWinner();
                 if (winner != null)
                 {
                     Console.WriteLine(winner.Name + " has won!");
@@ -102,7 +103,7 @@ namespace GameEngine
             }
         }
         
-        private void Action(IPlayer activePlayer, int result)
+        private void Action(Player activePlayer, int result)
         {
             GameConsole.ConsolePrint($"{activePlayer.ColorName()} rolls a {result}");
 
@@ -142,6 +143,6 @@ namespace GameEngine
         /// </summary>
         private void NextTurn() => Players = Players.Skip(1).Concat(Players.Take(1)).ToList();
 
-        private bool PlayerOfTypeExists(Type playerType) => Players.Any(x => x.GetType() == playerType);
+        private bool PlayerOfTypeExists(PlayerType playerType) => Players.Any(x => x.PlayerType == playerType);
     }
 }

@@ -21,10 +21,10 @@ namespace TheLudoGame
                 .Build();
 
             var game = new Game()
-                .AddPlayer(new RedPlayer { Name = "Player Red" })
-                .AddPlayer(new BluePlayer { Name = "Player Blue" })
-                .AddPlayer(new GreenPlayer { Name = "Player Green" })
-                .AddPlayer(new YellowPlayer { Name = "Player Yellow" })
+                .AddPlayer(new Player { PlayerType = PlayerType.Red, Name = "Player Red" })
+                .AddPlayer(new Player { PlayerType = PlayerType.Blue, Name = "Player Blue" })
+                .AddPlayer(new Player { PlayerType = PlayerType.Green, Name = "Player Green" })
+                .AddPlayer(new Player { PlayerType = PlayerType.Yellow,  Name = "Player Yellow" })
                 .Start();
 
             Console.ReadLine();

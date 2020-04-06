@@ -39,7 +39,7 @@ namespace GameEngine
             Pieces = new List<Piece>();
         }
 
-        public void Build(List<IPlayer> players)
+        public void Build(List<Player> players)
         {
             OuterPath = (OuterPath)new OuterPath().Build();
             RedPath = (RedInnerPath)new RedInnerPath().Build();
@@ -48,18 +48,18 @@ namespace GameEngine
             YellowPath = (YellowInnerPath)new YellowInnerPath().Build();
 
             players.ForEach(p => {
-                switch(p.GetType().ToString().Substring(11))
+                switch(p.PlayerType)
                 {
-                    case "RedPlayer":
+                    case PlayerType.Red:
                         p.InnerPath = RedPath;
                         break;
-                    case "BluePlayer":
+                    case PlayerType.Blue:
                         p.InnerPath = BluePath;
                         break;
-                    case "GreenPlayer":
+                    case PlayerType.Green:
                         p.InnerPath = GreenPath;
                         break;
-                    case "YellowPlayer":
+                    case PlayerType.Yellow:
                         p.InnerPath = YellowPath;
                         break;
                 }
@@ -103,7 +103,7 @@ namespace GameEngine
             return piece;
         }
 
-        public void MovePiece(IPlayer player, int steps)
+        public void MovePiece(Player player, int steps)
         {
             var piece = Pieces.Where(p => p.Player == player).FirstOrDefault();
             Path path = null;
@@ -139,12 +139,13 @@ namespace GameEngine
             }
         }
 
-        public void PlacePiece(IPlayer activePlayer)
+        public void PlacePiece(Player activePlayer)
         {
             var piece = Pieces
                .Where(p => p.Player == activePlayer && !p.InPlay)
                .First();
-            piece.Move(activePlayer.StartX, activePlayer.StartY);
+            int[] playerStartPoint = activePlayer.GetStartPoint();
+            piece.Move(playerStartPoint[0], playerStartPoint[1]);
         }
 
         public void MoveWithinInnerPath(Piece piece, int currentLocationIndex, Path path, int steps)

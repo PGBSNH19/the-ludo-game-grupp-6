@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheLudoGame", "TheLudoGame\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameEngine", "GameEngine\GameEngine.csproj", "{F09C6F28-33D7-49AA-8A74-BADCF53B6D83}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestLudo", "UnitTestLudo\UnitTestLudo.csproj", "{202E8294-D588-45E8-B964-86A4ADE83E70}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTestLudo", "UnitTestLudo\UnitTestLudo.csproj", "{202E8294-D588-45E8-B964-86A4ADE83E70}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,149 +1,51 @@
-﻿using GameEngine;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
+using System.Text;
 
 namespace GameEngine
 {
-    public interface IPlayer
+    public class Player
     {
         public int PlayerID { get; set; }
         public string Name { get; set; }
         public int Score { get; set; }
-        public int GameID  { get; set; }
+        public int GameID { get; set; }
         public Game Game { get; set; }
-
-        public int StartX { get; set; }
-        public int StartY { get; set; }
-        public PlayerColor PlayerColor { get; set; }
         public Path InnerPath { get; set; }
+        public PlayerType PlayerType { get; set; }
 
         public ConsoleColor GetColor()
         {
-            return PlayerColor switch
+            return PlayerType switch
             {
-                PlayerColor.Red => ConsoleColor.Red,
-                PlayerColor.Blue => ConsoleColor.Blue,
-                PlayerColor.Green => ConsoleColor.Green,
-                PlayerColor.Yellow => ConsoleColor.DarkYellow,
+                PlayerType.Red => ConsoleColor.Red,
+                PlayerType.Blue => ConsoleColor.Blue,
+                PlayerType.Green => ConsoleColor.Green,
+                PlayerType.Yellow => ConsoleColor.DarkYellow,
                 _ => ConsoleColor.White
             };
         }
 
+        public int[] GetStartPoint()
+        {
+            return PlayerType switch
+            {
+                PlayerType.Blue => new int[] { 1, 6 },
+                PlayerType.Red => new int[] { 8, 1 },
+                PlayerType.Yellow => new int[] { 6, 13 },
+                PlayerType.Green => new int[] { 13, 8 },
+                _ => throw new Exception("Could not find start point for type " + PlayerType + "."),
+            };
+        }
+        
         public string ColorName() => GetType().ToString().Substring(11);
     }
 
-    public class BluePlayer : IPlayer
+    public enum PlayerType
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int PlayerID { get; set; }
-        public string Name { get; set; }
-        public int Score { get; set; }
-        [ForeignKey("Game")]
-        public int GameID { get; set; }
-        public Game Game { get; set; }
-
-        [NotMapped]
-        public int StartX { get; set; }
-        [NotMapped]
-        public int StartY { get; set; }
-        [NotMapped]
-        public PlayerColor PlayerColor { get; set; }
-        [NotMapped]
-        public Path InnerPath { get; set; }
-
-        public BluePlayer()
-        {
-            StartX = 1;
-            StartY = 6;
-            PlayerColor = PlayerColor.Blue;
-        }
-    }
-
-    public class GreenPlayer : IPlayer
-    {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int PlayerID { get; set; }
-        public string Name { get; set; }
-        public int Score { get; set; }
-        [ForeignKey("Game")]
-        public int GameID { get; set; }
-        public Game Game { get; set; }
-
-        [NotMapped]
-        public int StartX { get; set; }
-        [NotMapped]
-        public int StartY { get; set; }
-        [NotMapped]
-        public PlayerColor PlayerColor { get; set; }
-        [NotMapped]
-        public Path InnerPath { get; set; }
-
-        public GreenPlayer()
-        {
-            StartX = 13; 
-            StartY = 8;
-            PlayerColor = PlayerColor.Green;
-        }
-    }
-
-    public class RedPlayer : IPlayer
-    {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int PlayerID { get; set; }
-        public string Name { get; set; }
-        public int Score { get; set; }
-        [ForeignKey("Game")]
-        public int GameID { get; set; }
-        public Game Game { get; set; }
-
-        [NotMapped]
-        public int StartX { get; set; }
-        [NotMapped]
-        public int StartY { get; set; }
-        [NotMapped]
-        public PlayerColor PlayerColor { get; set; }
-        [NotMapped]
-        public Path InnerPath { get; set; }
-
-        public RedPlayer()
-        {
-            StartX = 8;
-            StartY = 1;
-            PlayerColor = PlayerColor.Red;
-        }
-    }
-
-    public class YellowPlayer : IPlayer
-    {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int PlayerID { get; set; }
-        public string Name { get; set; }
-        public int Score { get; set; }
-        [ForeignKey("Game")]
-        public int GameID { get; set; }
-        public Game Game { get; set; }
-
-        [NotMapped]
-        public int StartX { get; set; }
-        [NotMapped]
-        public int StartY { get; set; }
-        [NotMapped]
-        public PlayerColor PlayerColor { get; set; }
-        [NotMapped]
-        public Path InnerPath { get; set; }
-
-        public YellowPlayer()
-        {
-            StartX = 6;
-            StartY = 13;
-            PlayerColor = PlayerColor.Yellow;
-        }
+        Blue,
+        Red,
+        Yellow,
+        Green
     }
 }

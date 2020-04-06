@@ -30,7 +30,7 @@ namespace GameEngine
         [NotMapped]
         public bool InPlay { get => !(X == 0 && Y == 0); }
         [NotMapped]
-        public IPlayer Player { get; set; }
+        public Player Player { get; set; }
 
         public Piece() 
         {
