@@ -1,6 +1,9 @@
 ﻿using GameEngine;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace GameEngine
 {
@@ -10,18 +13,40 @@ namespace GameEngine
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PlayerID { get; set; }
-        public string PlayerName { get; set; }
+        public string Name { get; set; }
+        public int Score { get; set; } = 0;
+
         [NotMapped]
-        public Path BoardPath { get; set; }
-        public Point StartLocation { get; set; }
+        public int StartX { get; set; }
+        [NotMapped]
+        public int StartY { get; set; }
+        [NotMapped]
+        public PlayerColor PlayerColor;
+        [NotMapped]
+        public string ColorName => GetType().ToString().Substring(11);
+        [NotMapped]
+        public Path InnerPath { get; set; }
+
+        public ConsoleColor GetColor()
+        {
+            return PlayerColor switch
+            {
+                PlayerColor.Red => ConsoleColor.Red,
+                PlayerColor.Blue => ConsoleColor.Blue,
+                PlayerColor.Green => ConsoleColor.Green,
+                PlayerColor.Yellow => ConsoleColor.DarkYellow,
+                _ => ConsoleColor.White
+            };
+        }
     }
 
     public class BluePlayer : Player
     {
         public BluePlayer()
         {
-            BoardPath = new BlueBoardPath();
-            StartLocation = new Point(1, 6);
+            StartX = 1;
+            StartY = 6;
+            PlayerColor = PlayerColor.Blue;
         }
     }
 
@@ -29,8 +54,9 @@ namespace GameEngine
     {
         public GreenPlayer()
         {
-            BoardPath = new GreenBoardPath();
-            StartLocation = new Point(13, 8);
+            StartX = 13; 
+            StartY = 8;
+            PlayerColor = PlayerColor.Green;
         }
     }
 
@@ -38,8 +64,9 @@ namespace GameEngine
     {
         public RedPlayer()
         {
-            BoardPath = new RedBoardPath();
-            StartLocation = new Point(8, 1);
+            StartX = 8;
+            StartY = 1;
+            PlayerColor = PlayerColor.Red;
         }
     }
 
@@ -47,8 +74,9 @@ namespace GameEngine
     {
         public YellowPlayer()
         {
-            BoardPath = new YellowBoardPath();
-            StartLocation = new Point(6, 13);
+            StartX = 6;
+            StartY = 13;
+            PlayerColor = PlayerColor.Yellow;
         }
     }
 }

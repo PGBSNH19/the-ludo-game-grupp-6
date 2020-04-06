@@ -12,7 +12,7 @@ namespace TheLudoGame
     {
         private IConfigurationRoot _configuration;
 
-        public DbSet<Square> BoardSquares { get; set; }
+        public DbSet<Tile> BoardSquares { get; set; }
         public DbSet<Board> Boards { get; set; }
         public DbSet<Game> Games { get; set; }
         public DbSet<Player> Players { get; set; }

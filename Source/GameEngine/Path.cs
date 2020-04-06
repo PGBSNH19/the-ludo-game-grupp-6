@@ -1,30 +1,71 @@
-﻿namespace GameEngine
+﻿using System.Collections.Generic;
+using System.IO;
+
+namespace GameEngine
 {
     public abstract class Path
     {
-        public int BoardPathID { get; set; }
-        public Point[] Points { get; set; }
-        // Placeholder value
-        internal readonly int _pathSize = 50;
+        public List<Tile> Tiles { get; set; }
+        public string PathUrl { get; set; }
+
+        public Path() => Tiles = new List<Tile>();
+
+        public Path Build()
+        {
+            var pathList = File.ReadAllLines(PathUrl);
+            foreach(var data in pathList)
+            {
+                var tileData = data.Split(',');
+                var tile = new Tile
+                {
+                    X = int.Parse(tileData[0]),
+                    Y = int.Parse(tileData[1])
+                };
+                tile.SetColor(tileData[2]);
+
+                Tiles.Add(tile);
+            }
+            return this;
+        }
     }
 
-    public class RedBoardPath : Path
+    public class OuterPath : Path
     {
-        public RedBoardPath() => Points = new Point[_pathSize];
+        public OuterPath()
+        {
+            PathUrl = "Paths/outer_path_coords.txt";
+        }
     }
 
-    public class BlueBoardPath : Path
+    public class RedInnerPath : Path
     {
-        public BlueBoardPath() => Points = new Point[_pathSize];
+        public RedInnerPath()
+        {
+            PathUrl = "Paths/red_path_coords.txt";
+        }
     }
 
-    public class GreenBoardPath : Path
+    public class BlueInnerPath : Path
     {
-        public GreenBoardPath() => Points = new Point[_pathSize];
+        public BlueInnerPath()
+        {
+            PathUrl = "Paths/blue_path_coords.txt";
+        }
     }
 
-    public class YellowBoardPath : Path
+    public class GreenInnerPath : Path
     {
-        public YellowBoardPath() => Points = new Point[_pathSize];
+        public GreenInnerPath()
+        {
+            PathUrl = "Paths/green_path_coords.txt";
+        }
+    }
+
+    public class YellowInnerPath : Path
+    {
+        public YellowInnerPath()
+        {
+            PathUrl = "Paths/yellow_path_coords.txt";
+        }
     }
 }
