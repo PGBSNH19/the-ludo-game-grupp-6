@@ -14,7 +14,6 @@ namespace GameEngine
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int BoardID { get; set; }
         public List<Piece> Pieces { get; set; }
-        //public List<Player> Players { get; set; }
 
 
         [NotMapped]

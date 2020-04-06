@@ -11,12 +11,16 @@ namespace TheLudoGame
     class LudoContext: DbContext
     {
         private IConfigurationRoot _configuration;
+        
+        public DbSet<Board> Board { get; set; }
+        public DbSet<Game> Game { get; set; }
+        public DbSet<Player> Player { get; set; }
+        public DbSet<Piece> Piece { get; set; }
 
-        public DbSet<Tile> BoardSquares { get; set; }
-        public DbSet<Board> Boards { get; set; }
-        public DbSet<Game> Games { get; set; }
-        public DbSet<Player> Players { get; set; }
+        public LudoContext()
+        {
 
+        }
         public LudoContext(IConfigurationRoot configuration)
         {
             this._configuration = configuration;
@@ -24,8 +28,13 @@ namespace TheLudoGame
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
+
             optionsBuilder.EnableSensitiveDataLogging(true);
-            optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"));
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

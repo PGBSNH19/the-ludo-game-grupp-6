@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -13,13 +14,18 @@ namespace GameEngine
         Green,
         Yellow
     }
-
+    [Table("Piece")]
     public class Piece : Point
     {
-        public int BoardPieceID { get; set; }
-        public string Visual { get; } = "◙";
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int PieceID { get; set; }
+        [ForeignKey("Player")]
+        public int PlayerID { get; set; }
         public int Steps { get; set; }
         public bool Completed { get; set; } = false;
+        [NotMapped]
+        public string Visual { get; } = "◙";
         [NotMapped]
         public bool InPlay { get => !(X == 0 && Y == 0); }
         [NotMapped]

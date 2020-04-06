@@ -6,11 +6,8 @@ namespace GameEngine
 {
     public class Tile : Point
     {
-        public int BoardSquareID { get; set; }
         public string Visual { get; set; }
         public ConsoleColor BackgroundColor { get; set; }
-
-        //public Point Location { get; set; }
 
         public Tile() => Visual = " ";
 
