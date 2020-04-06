@@ -1,13 +1,18 @@
 ﻿using GameEngine.Modules;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace GameEngine
 {
+    [Table("Game")]
     public class Game
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int BoardID { get; set; }
         public Board Board { get; set; }
         public List<Player> Players { get; set; }
 

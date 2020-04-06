@@ -23,7 +23,7 @@ namespace TheLudoGame
             var context = new LudoContext(configuration);
 
             var game = new Game()
-                //.AddPlayer(new RedPlayer { Name = "Player Red" })
+                .AddPlayer(new RedPlayer { Name = "Player Red" })
                 .AddPlayer(new BluePlayer { Name = "Player Blue" })
                 //.AddPlayer(new GreenPlayer { Name = "Player Green" })
                 //.AddPlayer(new YellowPlayer { Name = "Player Yellow" })
@@ -32,7 +32,7 @@ namespace TheLudoGame
             Console.ReadLine();
         }
 
-        private static void ApplyGlobalAppSettings()
+        private static void ApplyGlobalAppSettings()  
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.CursorVisible = false;

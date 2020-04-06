@@ -9,10 +9,8 @@ namespace UnitTestLudo
         [TestMethod]
         public void DiceBetweenOneAndSix()
         {
-            var dice = new Dice();
-            int result = dice.Roll();
+            int result = Dice.Roll();
             Assert.IsTrue(result >= 1 && result <= 6);
-
         }
     }
 }

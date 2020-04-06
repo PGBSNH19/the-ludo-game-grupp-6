@@ -1,21 +1,33 @@
 ﻿using GameEngine.Modules;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace GameEngine
 {
+    [Table("Board")]
     public class Board
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int BoardID { get; set; }
         public List<Piece> Pieces { get; set; }
+        //public List<Player> Players { get; set; }
 
+
+        [NotMapped]
         public OuterPath OuterPath { get; set; }
+        [NotMapped]
         public RedInnerPath RedPath { get; set; }
+        [NotMapped]
         public BlueInnerPath BluePath { get; set; }
+        [NotMapped]
         public GreenInnerPath GreenPath { get; set; }
+        [NotMapped]
         public YellowInnerPath YellowPath { get; set; }
-        public List<Player> Players { get; set; }
+        
 
         [NotMapped]
         public GameConsole GameConsole { get; set; }
