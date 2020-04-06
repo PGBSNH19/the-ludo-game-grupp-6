@@ -98,6 +98,12 @@ namespace GameEngine
             });
         }
 
+        private Piece GetPieceInBoard(Piece pieceToMove)
+        {
+            Piece piece = Pieces.FirstOrDefault(p => p.Equals(pieceToMove) && p != pieceToMove);
+            return piece;
+        }
+
         public void MovePiece(Player player, int steps)
         {
             var piece = Pieces.Where(p => p.Player == player).FirstOrDefault();
@@ -111,19 +117,26 @@ namespace GameEngine
                 var currentLocationIndex = path.Tiles
                     .IndexOf(path.Tiles.First(t => t.Equals(piece)));
 
-                piece.MoveWithinInnerPath(currentLocationIndex, path, steps);
+                MoveWithinInnerPath(piece, currentLocationIndex, path, steps);
             }
             // Enter InnerPath
             else if (piece.Steps + steps > 50)
             {
                 path = player.InnerPath;
-                piece.MoveIntoInnerPath(path, steps);
+                MoveIntoInnerPath(piece, path, steps);
             }
             // Move along OuterPath
             else
             {
                 path = OuterPath;
-                piece.MoveWithinOuterPath(path, steps);
+                MoveWithinOuterPath(piece, path, steps);
+            }
+            Piece existingPiece = GetPieceInBoard(piece);
+
+            if (existingPiece != null)
+            {
+                GameConsole.ConsolePrint(player.ColorName + " kicks out " + existingPiece.Player.ColorName);
+                existingPiece.MoveOut();
             }
         }
 
@@ -133,6 +146,53 @@ namespace GameEngine
                .Where(p => p.Player == activePlayer && !p.InPlay)
                .First();
             piece.Move(activePlayer.StartX, activePlayer.StartY);
+        }
+
+        public void MoveWithinInnerPath(Piece piece, int currentLocationIndex, Path path, int steps)
+        {
+            var pathLength = path.Tiles.Count;
+            int nextLocationIndex;
+
+            if (currentLocationIndex == pathLength - 1)
+            {
+                if (steps != 6)
+                    return;
+
+                piece.PassGoal();
+                return;
+            }
+            else if (currentLocationIndex + steps > pathLength - 1)
+            {
+                var diff = currentLocationIndex + steps - (pathLength - 1);
+                nextLocationIndex = (pathLength - 1) - Math.Abs(diff);
+                if (nextLocationIndex < 1) nextLocationIndex = 0;
+            }
+            else
+            {
+                nextLocationIndex = currentLocationIndex + steps;
+            }
+
+            piece.Move(path.Tiles[nextLocationIndex].X, path.Tiles[nextLocationIndex].Y, steps);
+        }
+
+        public void MoveIntoInnerPath(Piece piece, Path path, int steps)
+        {
+            int nextLocationIndex = piece.Steps + (steps - 1) - 50;
+            if (nextLocationIndex > path.Tiles.Count - 1)
+                nextLocationIndex--;
+            piece.Move(path.Tiles[nextLocationIndex].X, path.Tiles[nextLocationIndex].Y, steps);
+        }
+
+        public void MoveWithinOuterPath(Piece piece, Path path, int steps)
+        {
+            var currentTile = path.Tiles.First(t => t.Equals(piece));
+
+            int nextLocationIndex = path.Tiles.IndexOf(currentTile) + steps;
+
+            if (nextLocationIndex >= path.Tiles.Count)
+                nextLocationIndex -= path.Tiles.Count;
+
+            piece.Move(path.Tiles[nextLocationIndex].X, path.Tiles[nextLocationIndex].Y, steps);
         }
     }
 }
