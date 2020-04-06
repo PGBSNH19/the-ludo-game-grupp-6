@@ -31,7 +31,6 @@ namespace GameEngine
             return this;
         }
 
-
         /// <summary>
         /// For now all players only have 1 piece
         /// </summary>
