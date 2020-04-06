@@ -20,7 +20,8 @@ namespace GameEngine
 
         [NotMapped]
         public GameConsole GameConsole { get; set; }
-
+        [NotMapped]
+        public List<ScoreBoard> ScoreBoards { get; set; }
         [NotMapped]
         public List<Player> Players { get; set; }
 
@@ -28,6 +29,7 @@ namespace GameEngine
         {
             GameConsole = new GameConsole();
             Board = new Board();
+            ScoreBoards = new List<ScoreBoard>();
             Players = new List<Player>();
         }
 
@@ -35,16 +37,10 @@ namespace GameEngine
         {
             ValidateNewPlayerEntry(player);
             AddPieces(player);
-            Players.Add(player);
-            GameConsole.ConsolePrint($"{player.ColorName()} enters game");
-            GameConsole.ConsolePrint($" ");
-            return this;
-        }
 
-        public Player GetWinner()
-        {
-            Player player = Players.FirstOrDefault(x => x.Score == 4);
-            return player;
+            Players.Add(player);
+            GameConsole.ConsolePrint(player, "enters game");
+            return this;
         }
 
         /// <summary>
@@ -55,8 +51,6 @@ namespace GameEngine
         {
             //for(int i = 0; i < 4; i++)
             //{
-            var piece = new Piece { Player = owner };
-            piece.Reset();
             Board.Pieces.Add(new Piece { Player = owner });
             //}
         }
@@ -68,71 +62,86 @@ namespace GameEngine
         private void ValidateNewPlayerEntry(Player player)
         {
             if (Players.Count == 4)
-            {
                 throw new ArgumentOutOfRangeException("Can't add more than four players.");
-            }
             else if (PlayerOfTypeExists(player.PlayerType))
-            {
                 throw new ArgumentException("Player of type " + player.GetType() + " already exists.");
-            }
+        }
+
+        public Game Build()
+        {
+            GameStateReady();
+
+            Board.GameConsole = GameConsole;
+            Board.Build(Players);
+
+            return this;
+        }
+
+        public Game AddScoreBoards()
+        {
+            Players.ForEach(p => ScoreBoards.Add(new ScoreBoard(p)));
+            return this;
         }
 
         public Game Start()
         {
-            ReadyStateCheck();
-            Board.Build(Players);
-            Board.GameConsole = GameConsole;
-            Board.Draw();
             while (true)
             {
-                var activePlayer = Players.First();
-                Action(activePlayer, Dice.Roll());
-
-                Board.Draw();
-
-                Player winner = GetWinner();
-                if (winner != null)
-                {
-                    Console.WriteLine(winner.Name + " has won!");
-                    Console.ReadLine();
-                    return this;
-                }
-
-                NextTurn();
                 Console.ReadLine();
+                Action(Players.First(), Dice.Roll());
+
+                RenderScreen();
+
+                if (GameStateFinished())
+                    return this;
+
+                NextPlayer();
             }
         }
-        
+
+        private void RenderScreen()
+        {
+            ScoreBoards.ForEach(s => s.Draw());
+            Board.Draw();
+        }
+
+        private bool GameStateFinished()
+        {
+            Player winner = GetWinner();
+
+            if (winner == null)
+                return false;
+
+            Console.WriteLine(winner.Name + " has won!");
+            Console.ReadLine();
+            return true;
+        }
+
+        public Player GetWinner() => Players.FirstOrDefault(x => x.Score == 4);
+
         private void Action(Player activePlayer, int result)
         {
-            GameConsole.ConsolePrint($"{activePlayer.ColorName()} rolls a {result}");
+            GameConsole.ConsolePrint(activePlayer, $"rolls a {result}");
 
-            if (result == 6 && Board.Pieces.Any(p => !p.InPlay && p.Player == activePlayer))
+            if (result == 6 && Board.Pieces.Any(p => !p.InPlay && p.Player == activePlayer && !p.Completed))
             {
-                // Place a piece
-                GameConsole.ConsolePrint($"\t{activePlayer.ColorName()} puts a Piece into play");
+                GameConsole.ConsolePrint(activePlayer, "puts a Piece into play");
                 Board.PlacePiece(activePlayer);
             }
             else if (Board.Pieces.Any(p => p.InPlay && p.Player == activePlayer))
             {
-                // Move a piece
-                GameConsole.ConsolePrint($"\t{activePlayer.ColorName()} moves a piece");
+                GameConsole.ConsolePrint(activePlayer, "moves a Piece");
                 Board.MovePiece(activePlayer, result);
             }
             else
-            {
-                // No action available
-                GameConsole.ConsolePrint($"\t{activePlayer.ColorName()} was unable to take action");
-            }
+                GameConsole.ConsolePrint(activePlayer, "was unable to take action");
         }
 
         /// <summary>
-        /// Throws exception if less than 2 players or more than 4 players
+        /// Throws exception if  more than 4 players
         /// </summary>
-        private void ReadyStateCheck()
+        private void GameStateReady()
         {
-            //if(Players.Count() < 2)
-            //    throw new Exception("More than one player is necessary to start.");
             if (Players.Count() > 4)
                 throw new Exception("Four players or less is necessary to start.");
         }
@@ -141,7 +150,7 @@ namespace GameEngine
         /// Turn succession 
         /// Next players turn (First in list)
         /// </summary>
-        private void NextTurn() => Players = Players.Skip(1).Concat(Players.Take(1)).ToList();
+        private void NextPlayer() => Players = Players.Skip(1).Concat(Players.Take(1)).ToList();
 
         private bool PlayerOfTypeExists(PlayerType playerType) => Players.Any(x => x.PlayerType == playerType);
     }

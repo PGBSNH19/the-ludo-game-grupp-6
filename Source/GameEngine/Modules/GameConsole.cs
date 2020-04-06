@@ -8,23 +8,27 @@ namespace GameEngine.Modules
     {
         private int linesCount = 0;
 
-        private readonly int CONSOLE_CAPACITY = 24;
+        private readonly int CONSOLE_CAPACITY = 20;
 
         private readonly int PADDING_LEFT = 30;
         private readonly int PADDING_TOP = 3;
 
         private readonly int WIDTH = 50;
-        private readonly int HEIGHT = 25;
+        private readonly int HEIGHT = 21;
 
         public GameConsole() => Clear();
 
-        public void ConsolePrint(string data)
+        public void ConsolePrint(Player player, string data)
         {
             if(linesCount > CONSOLE_CAPACITY - 1)
                 Clear();
 
             Console.SetCursorPosition(PADDING_LEFT, linesCount + PADDING_TOP);
-            Console.WriteLine(data);
+            Console.Write(player.Name + " [");
+            Console.ForegroundColor = player.GetColor();
+            Console.Write(player.PlayerType);
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine($"] {data}");
             linesCount++;
         }
 

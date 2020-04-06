@@ -25,6 +25,7 @@ namespace GameEngine
         public int PlayerID { get; set; }
         public int Steps { get; set; }
         public bool Completed { get; set; } = false;
+
         [NotMapped]
         public string Visual { get; } = "◙";
         [NotMapped]
