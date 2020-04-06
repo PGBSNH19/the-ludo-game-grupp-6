@@ -12,33 +12,37 @@ namespace GameEngine
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int GameID { get; set; }
+        [ForeignKey("Board")]
         public int BoardID { get; set; }
         public Board Board { get; set; }
-        public List<Player> Players { get; set; }
 
         [NotMapped]
         public GameConsole GameConsole { get; set; }
+
+        [NotMapped]
+        List<IPlayer> Players { get; set; }
 
         public Game()
         {
             GameConsole = new GameConsole();
             Board = new Board();
-            Players = new List<Player>();
+            Players = new List<IPlayer>();
         }
 
-        public Game AddPlayer(Player player)
+        public Game AddPlayer(IPlayer player)
         {
             ValidateNewPlayerEntry(player);
             AddPieces(player);
             Players.Add(player);
-            GameConsole.ConsolePrint($"{player.ColorName} enters game");
+            GameConsole.ConsolePrint($"{player.ColorName()} enters game");
             GameConsole.ConsolePrint($" ");
             return this;
         }
 
-        public Player GetWinner()
+        public IPlayer GetWinner()
         {
-            Player player = Players.FirstOrDefault(x => x.Score == 4);
+            IPlayer player = Players.FirstOrDefault(x => x.Score == 4);
             return player;
         }
 
@@ -46,7 +50,7 @@ namespace GameEngine
         /// For now all players only have 1 piece
         /// </summary>
         /// <param name="owner"></param>
-        private void AddPieces(Player owner)
+        private void AddPieces(IPlayer owner)
         {
             //for(int i = 0; i < 4; i++)
             //{
@@ -60,7 +64,7 @@ namespace GameEngine
         /// Throws Exception if player of Type T already exists
         /// Throws Exception if Player count more than 4
         /// </summary>
-        private void ValidateNewPlayerEntry(Player player)
+        private void ValidateNewPlayerEntry(IPlayer player)
         {
             if (Players.Count == 4)
             {
@@ -85,7 +89,7 @@ namespace GameEngine
 
                 Board.Draw();
 
-                Player winner = GetWinner();
+                IPlayer winner = GetWinner();
                 if (winner != null)
                 {
                     Console.WriteLine(winner.Name + " has won!");
@@ -98,26 +102,26 @@ namespace GameEngine
             }
         }
         
-        private void Action(Player activePlayer, int result)
+        private void Action(IPlayer activePlayer, int result)
         {
-            GameConsole.ConsolePrint($"{activePlayer.ColorName} rolls a {result}");
+            GameConsole.ConsolePrint($"{activePlayer.ColorName()} rolls a {result}");
 
             if (result == 6 && Board.Pieces.Any(p => !p.InPlay && p.Player == activePlayer))
             {
                 // Place a piece
-                GameConsole.ConsolePrint($"\t{activePlayer.ColorName} puts a Piece into play");
+                GameConsole.ConsolePrint($"\t{activePlayer.ColorName()} puts a Piece into play");
                 Board.PlacePiece(activePlayer);
             }
             else if (Board.Pieces.Any(p => p.InPlay && p.Player == activePlayer))
             {
                 // Move a piece
-                GameConsole.ConsolePrint($"\t{activePlayer.ColorName} moves a piece");
+                GameConsole.ConsolePrint($"\t{activePlayer.ColorName()} moves a piece");
                 Board.MovePiece(activePlayer, result);
             }
             else
             {
                 // No action available
-                GameConsole.ConsolePrint($"\t{activePlayer.ColorName} was unable to take action");
+                GameConsole.ConsolePrint($"\t{activePlayer.ColorName()} was unable to take action");
             }
         }
 

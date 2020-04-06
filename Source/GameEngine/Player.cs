@@ -7,24 +7,17 @@ using System.Linq;
 
 namespace GameEngine
 {
-    [Table("Player")]
-    public abstract class Player
+    public interface IPlayer
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PlayerID { get; set; }
         public string Name { get; set; }
-        public int Score { get; set; } = 0;
+        public int Score { get; set; }
+        public int GameID  { get; set; }
+        public Game Game { get; set; }
 
-        [NotMapped]
         public int StartX { get; set; }
-        [NotMapped]
         public int StartY { get; set; }
-        [NotMapped]
-        public PlayerColor PlayerColor;
-        [NotMapped]
-        public string ColorName => GetType().ToString().Substring(11);
-        [NotMapped]
+        public PlayerColor PlayerColor { get; set; }
         public Path InnerPath { get; set; }
 
         public ConsoleColor GetColor()
@@ -38,10 +31,30 @@ namespace GameEngine
                 _ => ConsoleColor.White
             };
         }
+
+        public string ColorName() => GetType().ToString().Substring(11);
     }
 
-    public class BluePlayer : Player
+    public class BluePlayer : IPlayer
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int PlayerID { get; set; }
+        public string Name { get; set; }
+        public int Score { get; set; }
+        [ForeignKey("Game")]
+        public int GameID { get; set; }
+        public Game Game { get; set; }
+
+        [NotMapped]
+        public int StartX { get; set; }
+        [NotMapped]
+        public int StartY { get; set; }
+        [NotMapped]
+        public PlayerColor PlayerColor { get; set; }
+        [NotMapped]
+        public Path InnerPath { get; set; }
+
         public BluePlayer()
         {
             StartX = 1;
@@ -50,8 +63,26 @@ namespace GameEngine
         }
     }
 
-    public class GreenPlayer : Player
+    public class GreenPlayer : IPlayer
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int PlayerID { get; set; }
+        public string Name { get; set; }
+        public int Score { get; set; }
+        [ForeignKey("Game")]
+        public int GameID { get; set; }
+        public Game Game { get; set; }
+
+        [NotMapped]
+        public int StartX { get; set; }
+        [NotMapped]
+        public int StartY { get; set; }
+        [NotMapped]
+        public PlayerColor PlayerColor { get; set; }
+        [NotMapped]
+        public Path InnerPath { get; set; }
+
         public GreenPlayer()
         {
             StartX = 13; 
@@ -60,8 +91,26 @@ namespace GameEngine
         }
     }
 
-    public class RedPlayer : Player
+    public class RedPlayer : IPlayer
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int PlayerID { get; set; }
+        public string Name { get; set; }
+        public int Score { get; set; }
+        [ForeignKey("Game")]
+        public int GameID { get; set; }
+        public Game Game { get; set; }
+
+        [NotMapped]
+        public int StartX { get; set; }
+        [NotMapped]
+        public int StartY { get; set; }
+        [NotMapped]
+        public PlayerColor PlayerColor { get; set; }
+        [NotMapped]
+        public Path InnerPath { get; set; }
+
         public RedPlayer()
         {
             StartX = 8;
@@ -70,8 +119,26 @@ namespace GameEngine
         }
     }
 
-    public class YellowPlayer : Player
+    public class YellowPlayer : IPlayer
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int PlayerID { get; set; }
+        public string Name { get; set; }
+        public int Score { get; set; }
+        [ForeignKey("Game")]
+        public int GameID { get; set; }
+        public Game Game { get; set; }
+
+        [NotMapped]
+        public int StartX { get; set; }
+        [NotMapped]
+        public int StartY { get; set; }
+        [NotMapped]
+        public PlayerColor PlayerColor { get; set; }
+        [NotMapped]
+        public Path InnerPath { get; set; }
+
         public YellowPlayer()
         {
             StartX = 6;

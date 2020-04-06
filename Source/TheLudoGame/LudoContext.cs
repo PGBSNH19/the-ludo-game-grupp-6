@@ -14,13 +14,14 @@ namespace TheLudoGame
         
         public DbSet<Board> Board { get; set; }
         public DbSet<Game> Game { get; set; }
-        public DbSet<Player> Player { get; set; }
+        public DbSet<RedPlayer> RedPlayer { get; set; }
+        public DbSet<BluePlayer> BluePlayer { get; set; }
+        public DbSet<GreenPlayer> GreenPlayer { get; set; }
+        public DbSet<YellowPlayer> YellowPlayer { get; set; }
         public DbSet<Piece> Piece { get; set; }
 
-        public LudoContext()
-        {
+        public LudoContext() { }
 
-        }
         public LudoContext(IConfigurationRoot configuration)
         {
             this._configuration = configuration;

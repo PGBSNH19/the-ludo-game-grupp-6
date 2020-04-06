@@ -20,8 +20,6 @@ namespace TheLudoGame
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            //var context = new LudoContext(configuration);
-
             var game = new Game()
                 .AddPlayer(new RedPlayer { Name = "Player Red" })
                 .AddPlayer(new BluePlayer { Name = "Player Blue" })

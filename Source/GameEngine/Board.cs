@@ -39,7 +39,7 @@ namespace GameEngine
             Pieces = new List<Piece>();
         }
 
-        public void Build(List<Player> players)
+        public void Build(List<IPlayer> players)
         {
             OuterPath = (OuterPath)new OuterPath().Build();
             RedPath = (RedInnerPath)new RedInnerPath().Build();
@@ -103,7 +103,7 @@ namespace GameEngine
             return piece;
         }
 
-        public void MovePiece(Player player, int steps)
+        public void MovePiece(IPlayer player, int steps)
         {
             var piece = Pieces.Where(p => p.Player == player).FirstOrDefault();
             Path path = null;
@@ -134,12 +134,12 @@ namespace GameEngine
 
             if (existingPiece != null)
             {
-                GameConsole.ConsolePrint(player.ColorName + " kicks out " + existingPiece.Player.ColorName);
+                GameConsole.ConsolePrint(player.ColorName() + " kicks out " + existingPiece.Player.ColorName());
                 existingPiece.MoveOut();
             }
         }
 
-        public void PlacePiece(Player activePlayer)
+        public void PlacePiece(IPlayer activePlayer)
         {
             var piece = Pieces
                .Where(p => p.Player == activePlayer && !p.InPlay)

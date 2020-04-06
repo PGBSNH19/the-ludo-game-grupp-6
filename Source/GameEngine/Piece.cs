@@ -14,6 +14,7 @@ namespace GameEngine
         Green,
         Yellow
     }
+
     [Table("Piece")]
     public class Piece : Point
     {
@@ -29,7 +30,7 @@ namespace GameEngine
         [NotMapped]
         public bool InPlay { get => !(X == 0 && Y == 0); }
         [NotMapped]
-        public Player Player { get; set; }
+        public IPlayer Player { get; set; }
 
         public Piece() 
         {

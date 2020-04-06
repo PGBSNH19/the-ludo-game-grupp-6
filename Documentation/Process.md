@@ -9,10 +9,16 @@
     * Nytt spel Meny
       * Antal spelare
       * Spelarnamn
+  
 * Spel autosparas efter varje drag
+
 * Skriv ner våra "custom" spelregler som del av Dokumentation
+
 * Lägg till exit/complete condition till Game klassen
-* Lägg till scoreboard
+
+  
+
+* Lägg till scoreboard och knuff i mån av tid
 
 
 
