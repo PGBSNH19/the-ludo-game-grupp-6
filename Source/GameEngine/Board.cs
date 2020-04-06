@@ -136,7 +136,7 @@ namespace GameEngine
         public void PlacePiece(Player activePlayer)
         {
             var piece = Pieces
-               .Where(p => p.Player == activePlayer && !p.InPlay)
+               .Where(p => p.Player == activePlayer && !p.InPlay && !p.Completed)
                .First();
             int[] playerStartPoint = activePlayer.GetStartPoint();
             piece.Move(playerStartPoint[0], playerStartPoint[1]);
