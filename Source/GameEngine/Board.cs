@@ -86,9 +86,9 @@ namespace GameEngine
             });
         }
 
-        private Piece GetPieceInBoard(Point point)
+        private Piece GetPieceInBoard(Piece pieceToMove)
         {
-            Piece piece = Pieces.FirstOrDefault(p => p.Equals(point));
+            Piece piece = Pieces.FirstOrDefault(p => p.Equals(pieceToMove) && p != pieceToMove);
             return piece;
         }
 
@@ -123,7 +123,8 @@ namespace GameEngine
 
             if (existingPiece != null)
             {
-                //Kick!
+                GameConsole.ConsolePrint(player.ColorName + " kicks out " + existingPiece.Player.ColorName);
+                existingPiece.MoveOut();
             }
         }
 
@@ -172,7 +173,7 @@ namespace GameEngine
 
         public void MoveWithinOuterPath(Piece piece, Path path, int steps)
         {
-            var currentTile = path.Tiles.First(t => t.Equals(this));
+            var currentTile = path.Tiles.First(t => t.Equals(piece));
 
             int nextLocationIndex = path.Tiles.IndexOf(currentTile) + steps;
 
