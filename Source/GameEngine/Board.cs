@@ -44,8 +44,14 @@ namespace GameEngine
             GreenPath = (GreenInnerPath)new GreenInnerPath().Build();
             YellowPath = (YellowInnerPath)new YellowInnerPath().Build();
 
+            DistributeInnerPaths(players);
+
+            return this;
+        }
+
+        private void DistributeInnerPaths(List<Player> players) =>
             players.ForEach(p => {
-                switch(p.PlayerType)
+                switch (p.PlayerType)
                 {
                     case PlayerType.Red:
                         p.InnerPath = RedPath;
@@ -61,8 +67,6 @@ namespace GameEngine
                         break;
                 }
             });
-            return this;
-        }
 
         public void Draw() 
         {
