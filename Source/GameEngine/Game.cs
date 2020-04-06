@@ -31,6 +31,12 @@ namespace GameEngine
             return this;
         }
 
+        public Player GetWinner()
+        {
+            Player player = Players.FirstOrDefault(x => x.Score == 4);
+            return player;
+        }
+
         /// <summary>
         /// For now all players only have 1 piece
         /// </summary>
@@ -73,7 +79,15 @@ namespace GameEngine
                 Action(activePlayer, Dice.Roll());
 
                 Board.Draw();
-                
+
+                Player winner = GetWinner();
+                if (winner != null)
+                {
+                    Console.WriteLine(winner.Name + " has won!");
+                    Console.ReadLine();
+                    return this;
+                }
+
                 NextTurn();
                 Console.ReadLine();
             }

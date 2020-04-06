@@ -53,52 +53,5 @@ namespace GameEngine
             Y = y;
             Steps += steps;
         }
-
-        public void MoveWithinInnerPath(int currentLocationIndex, Path path, int steps)
-        {
-            var pathLength = path.Tiles.Count;
-            int nextLocationIndex;
-
-            if (currentLocationIndex == pathLength - 1)
-            {
-                if (steps != 6)
-                    return;
-
-                PassGoal();
-                return;
-            }
-            else if (currentLocationIndex + steps > pathLength - 1)
-            {
-                var diff = currentLocationIndex + steps - (pathLength - 1);
-                nextLocationIndex = (pathLength - 1) - Math.Abs(diff);
-                if (nextLocationIndex < 1) nextLocationIndex = 0;
-            }
-            else
-            {
-                nextLocationIndex = currentLocationIndex + steps;
-            }
-
-            Move(path.Tiles[nextLocationIndex].X, path.Tiles[nextLocationIndex].Y, steps);
-        }
-
-        public void MoveIntoInnerPath(Path path, int steps)
-        {
-            int nextLocationIndex = Steps + (steps - 1) - 50;
-            if (nextLocationIndex > path.Tiles.Count - 1)
-                nextLocationIndex--;
-            Move(path.Tiles[nextLocationIndex].X, path.Tiles[nextLocationIndex].Y, steps);
-        }
-
-        public void MoveWithinOuterPath(Path path, int steps)
-        {
-            var currentTile = path.Tiles.First(t => t.Equals(this));
-
-            int nextLocationIndex = path.Tiles.IndexOf(currentTile) + steps;
-
-            if (nextLocationIndex >= path.Tiles.Count)
-                nextLocationIndex -= path.Tiles.Count;
-
-            Move(path.Tiles[nextLocationIndex].X, path.Tiles[nextLocationIndex].Y, steps);
-        }
     }
 }
