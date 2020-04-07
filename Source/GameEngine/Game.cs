@@ -13,15 +13,15 @@ namespace GameEngine
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int GameID { get; set; }
-
-        [NotMapped]
+        public List<Player> Players { get; set; }
+        [ForeignKey("Board")]
+        public int BoardID { get; set; }
         public Board Board { get; set; }
+
         [NotMapped]
         public GameConsole GameConsole { get; set; }
         [NotMapped]
         public List<ScoreBoard> ScoreBoards { get; set; }
-        [NotMapped]
-        public List<Player> Players { get; set; }
         [NotMapped]
         public LudoContext Context  { get; set; }
 

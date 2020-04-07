@@ -7,15 +7,34 @@ namespace GameEngine.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Game",
+                name: "Board",
                 columns: table => new
                 {
-                    GameID = table.Column<int>(nullable: false)
+                    BoardID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1")
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PK_Board", x => x.BoardID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Game",
+                columns: table => new
+                {
+                    GameID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BoardID = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
                     table.PrimaryKey("PK_Game", x => x.GameID);
+                    table.ForeignKey(
+                        name: "FK_Game_Board_BoardID",
+                        column: x => x.BoardID,
+                        principalTable: "Board",
+                        principalColumn: "BoardID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -50,11 +69,18 @@ namespace GameEngine.Migrations
                     Y = table.Column<int>(nullable: false),
                     PlayerID = table.Column<int>(nullable: false),
                     Steps = table.Column<int>(nullable: false),
-                    Completed = table.Column<bool>(nullable: false)
+                    Completed = table.Column<bool>(nullable: false),
+                    BoardID = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Piece", x => x.PieceID);
+                    table.ForeignKey(
+                        name: "FK_Piece_Board_BoardID",
+                        column: x => x.BoardID,
+                        principalTable: "Board",
+                        principalColumn: "BoardID",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Piece_Player_PlayerID",
                         column: x => x.PlayerID,
@@ -62,6 +88,16 @@ namespace GameEngine.Migrations
                         principalColumn: "PlayerID",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Game_BoardID",
+                table: "Game",
+                column: "BoardID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Piece_BoardID",
+                table: "Piece",
+                column: "BoardID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Piece_PlayerID",
@@ -84,6 +120,9 @@ namespace GameEngine.Migrations
 
             migrationBuilder.DropTable(
                 name: "Game");
+
+            migrationBuilder.DropTable(
+                name: "Board");
         }
     }
 }

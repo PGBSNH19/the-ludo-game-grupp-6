@@ -13,6 +13,7 @@ namespace GameEngine
         private IConfigurationRoot _configuration;
 
         public DbSet<Game> Game { get; set; }
+        public DbSet<Board> Board { get; set; }
         public DbSet<Player> Player { get; set; }
         public DbSet<Piece> Piece { get; set; }
 
