@@ -1,17 +1,18 @@
 ﻿using GameEngine;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace TheLudoGame
+namespace EFClassLibrary
 {
-    class LudoContext: DbContext
+    public class LudoContext : DbContext
     {
         private IConfigurationRoot _configuration;
-        
+
         public DbSet<Board> Board { get; set; }
         public DbSet<Game> Game { get; set; }
         public DbSet<Player> Player { get; set; }
@@ -37,6 +38,15 @@ namespace TheLudoGame
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            var playerTypeConverter = new EnumToNumberConverter<PlayerType, int>();
+
+            modelBuilder.Entity<Player>(entity =>
+            {
+                entity.Property(e => e.PlayerType)
+                    .HasConversion(playerTypeConverter)
+                    .HasDefaultValueSql("((0))");
+
+            });
             base.OnModelCreating(modelBuilder);
         }
 

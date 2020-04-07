@@ -12,9 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="Paths\blue_path_coords.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

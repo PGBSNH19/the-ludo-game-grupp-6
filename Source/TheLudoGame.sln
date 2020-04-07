@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameEngine", "GameEngine\Ga
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTestLudo", "UnitTestLudo\UnitTestLudo.csproj", "{202E8294-D588-45E8-B964-86A4ADE83E70}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFClassLibrary", "EFClassLibrary\EFClassLibrary.csproj", "{A303BFC1-6B58-48D5-B67A-B27FC178E070}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{202E8294-D588-45E8-B964-86A4ADE83E70}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{202E8294-D588-45E8-B964-86A4ADE83E70}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{202E8294-D588-45E8-B964-86A4ADE83E70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A303BFC1-6B58-48D5-B67A-B27FC178E070}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A303BFC1-6B58-48D5-B67A-B27FC178E070}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A303BFC1-6B58-48D5-B67A-B27FC178E070}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A303BFC1-6B58-48D5-B67A-B27FC178E070}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

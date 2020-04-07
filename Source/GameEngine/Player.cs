@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace GameEngine
@@ -11,6 +13,7 @@ namespace GameEngine
         public int Score { get; set; }
         public int GameID { get; set; }
         public Game Game { get; set; }
+        [NotMapped]
         public Path InnerPath { get; set; }
         public PlayerType PlayerType { get; set; }
 
