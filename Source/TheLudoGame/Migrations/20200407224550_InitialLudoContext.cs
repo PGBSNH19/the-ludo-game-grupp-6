@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace GameEngine.Migrations
+namespace TheLudoGame.Migrations
 {
-    public partial class initial : Migration
+    public partial class InitialLudoContext : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -24,6 +25,8 @@ namespace GameEngine.Migrations
                 {
                     GameID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    LastAction = table.Column<DateTime>(nullable: false),
+                    Completed = table.Column<bool>(nullable: false),
                     BoardID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>

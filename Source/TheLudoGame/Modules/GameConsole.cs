@@ -1,8 +1,9 @@
-﻿using System;
+﻿using GameEngine;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameEngine.Modules
+namespace TheLudoGame.Modules
 {
     public class GameConsole
     {
@@ -12,9 +13,6 @@ namespace GameEngine.Modules
 
         private readonly int PADDING_LEFT = 30;
         private readonly int PADDING_TOP = 3;
-
-        private readonly int WIDTH = 50;
-        private readonly int HEIGHT = 21;
 
         public GameConsole() => Clear();
 
@@ -32,31 +30,9 @@ namespace GameEngine.Modules
             linesCount++;
         }
 
-        public void DrawBorder()
-        {
-            Console.BackgroundColor = ConsoleColor.DarkGray;
-            for (int x = 0; x < WIDTH; x++)
-            {
-                Console.SetCursorPosition((PADDING_LEFT - 2) + x, 1);
-                Console.Write(" ");
-                Console.SetCursorPosition((PADDING_LEFT - 2) + x, HEIGHT + PADDING_TOP);
-                Console.Write(" ");
-            }
-            for (int y = 0; y < HEIGHT + PADDING_TOP; y++)
-            {
-                Console.SetCursorPosition((PADDING_LEFT - 2), y + 1);
-                Console.Write(" ");
-                Console.SetCursorPosition((PADDING_LEFT - 2) + WIDTH, y + 1);
-                Console.Write(" ");
-            }
-
-            Console.BackgroundColor = ConsoleColor.Black;
-        }
-
         private void Clear()
         {
             Console.Clear();
-            DrawBorder();
             Reset();
         }
 

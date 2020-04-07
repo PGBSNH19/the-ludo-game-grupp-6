@@ -1,9 +1,9 @@
-﻿using GameEngine.Modules;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace GameEngine
 {
@@ -13,24 +13,17 @@ namespace GameEngine
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int GameID { get; set; }
-        public List<Player> Players { get; set; }
+        public DateTime LastAction { get; set; }
+        public bool Completed { get; set; } = false;
         [ForeignKey("Board")]
         public int BoardID { get; set; }
         public Board Board { get; set; }
 
-        [NotMapped]
-        public GameConsole GameConsole { get; set; }
-        [NotMapped]
-        public List<ScoreBoard> ScoreBoards { get; set; }
-        [NotMapped]
-        public LudoContext Context  { get; set; }
+        public List<Player> Players { get; set; }
 
         public Game()
         {
-            Context = new LudoContext();
-            GameConsole = new GameConsole();
             Board = new Board();
-            ScoreBoards = new List<ScoreBoard>();
             Players = new List<Player>();
         }
 
@@ -41,20 +34,15 @@ namespace GameEngine
             AddPieces(player);
 
             Players.Add(player);
-            GameConsole.ConsolePrint(player, "enters game");
             return this;
         }
 
-        /// <summary>
-        /// For now all players only have 1 piece
-        /// </summary>
-        /// <param name="owner"></param>
         private void AddPieces(Player owner)
         {
-            //for(int i = 0; i < 4; i++)
-            //{
-            Board.Pieces.Add(new Piece { Player = owner });
-            //}
+            for (int i = 0; i < 4; i++)
+            {
+                Board.Pieces.Add(new Piece { Player = owner });
+            }
         }
 
         /// <summary>
@@ -72,103 +60,75 @@ namespace GameEngine
         public Game Build()
         {
             GameStateReady();
-
-            Board.GameConsole = GameConsole;
             Board.Build(Players);
-
-            return this;
-        }
-
-        public Game AddScoreBoards()
-        {
-            Players.ForEach(p => ScoreBoards.Add(new ScoreBoard(p)));
             return this;
         }
 
         public Game Start()
         {
-            this.Add();
-            while (true)
-            {
-                Console.ReadLine();
-                Action(Players.First(), Dice.Roll());
-
-                RenderScreen();
-
-                if (GameStateFinished())
-                    return this;
-
-                NextPlayer();
-                this.Update();
-            }
+            return this;
         }
 
-        private void Add()
-        {
-            Context.Game.Add(this);
-            Context.SaveChanges();
-            GameConsole.ConsolePrint(Players.First(),"Game successfully saved");
-        }
-        private void Update()
-        {
-            Context.Game.Update(this);
-            Context.SaveChanges();
-            GameConsole.ConsolePrint(Players.First(), "Game successfully updated");
-        }
+        public void DrawBoard() => Board.Draw(); 
 
-        private void RenderScreen()
-        {
-            ScoreBoards.ForEach(s => s.Draw());
-            Board.Draw();
-        }
-
-        private bool GameStateFinished()
+        public bool Finished()
         {
             Player winner = GetWinner();
 
             if (winner == null)
                 return false;
 
-            Console.WriteLine(winner.Name + " has won!");
-            Console.ReadLine();
             return true;
         }
 
         public Player GetWinner() => Players.FirstOrDefault(x => x.Score == 4);
 
-        private void Action(Player activePlayer, int result)
+        public void Action(int result)
         {
-            GameConsole.ConsolePrint(activePlayer, $"rolls a {result}");
+            var player = Players.First();
 
-            if (result == 6 && Board.Pieces.Any(p => !p.InPlay && p.Player == activePlayer && !p.Completed))
+            if (result == 6)
             {
-                GameConsole.ConsolePrint(activePlayer, "puts a Piece into play");
-                Board.PlacePiece(activePlayer);
-            }
-            else if (Board.Pieces.Any(p => p.InPlay && p.Player == activePlayer))
-            {
-                GameConsole.ConsolePrint(activePlayer, "moves a Piece");
-                Board.MovePiece(activePlayer, result);
+                HighRoll(player);
             }
             else
-                GameConsole.ConsolePrint(activePlayer, "was unable to take action");
+            {
+                Roll(player, result);
+            }
+        }
+
+        public void Roll(Player player, int result)
+        {
+            if (Board.Pieces.Any(p => p.InPlay && p.Player == player && !p.Completed))
+                Board.MovePiece(player, result);
+        }
+
+        public void HighRoll(Player activePlayer)
+        {
+            if (Board.Pieces.Any(p => p.InPlay && p.Player == activePlayer))
+            {
+                Board.MovePiece(activePlayer, 6);
+            }
+            else
+            {
+                Board.PlacePiece(activePlayer);
+            }
         }
 
         /// <summary>
         /// Throws exception if  more than 4 players
         /// </summary>
-        private void GameStateReady()
+        public void GameStateReady()
         {
             if (Players.Count() > 4)
                 throw new Exception("Four players or less is necessary to start.");
         }
 
         /// <summary>
-        /// Turn succession 
-        /// Next players turn (First in list)
+        /// Turn succession. Next players turn (Rotates Player List)
         /// </summary>
-        private void NextPlayer() => Players = Players.Skip(1).Concat(Players.Take(1)).ToList();
+        public void NextPlayer() => Players = Players.Skip(1).Concat(Players.Take(1)).ToList();
 
-        private bool PlayerOfTypeExists(PlayerType playerType) => Players.Any(x => x.PlayerType == playerType);
+        public bool PlayerOfTypeExists(PlayerType playerType) => Players.Any(x => x.PlayerType == playerType);
     }
 }

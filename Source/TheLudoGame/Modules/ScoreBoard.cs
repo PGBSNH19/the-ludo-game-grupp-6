@@ -1,8 +1,9 @@
-﻿using System;
+﻿using GameEngine;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameEngine.Modules
+namespace TheLudoGame.Modules
 {
     public class ScoreBoard
     {
@@ -53,7 +54,5 @@ namespace GameEngine.Modules
             Console.SetCursorPosition(PaddingX + 2, PaddingY + 1);
             Console.Write(Player.Score);
         }
-
-        private void Reset() => throw new NotImplementedException("Gört klart ditt lata fan!");
     }
 }

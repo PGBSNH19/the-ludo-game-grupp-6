@@ -1,5 +1,4 @@
-﻿using GameEngine.Modules;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -25,8 +24,6 @@ namespace GameEngine
         public GreenInnerPath GreenPath { get; set; }
         [NotMapped]
         public YellowInnerPath YellowPath { get; set; }
-        [NotMapped]
-        public GameConsole GameConsole { get; set; }
 
         private readonly int PADDING_LEFT = 5;
         private readonly int PADDING_TOP = 2;
@@ -101,7 +98,7 @@ namespace GameEngine
 
         public void MovePiece(Player player, int steps)
         {
-            var piece = Pieces.Where(p => p.Player == player).FirstOrDefault();
+            var piece = Pieces.Where(p => p.InPlay && p.Player == player && !p.Completed).FirstOrDefault();
             Path path = null;
 
             if (piece.Steps > 50)
@@ -129,7 +126,6 @@ namespace GameEngine
         {
             if (existingPiece == null)
                 return;
-            GameConsole.ConsolePrint(existingPiece.Player, $"was kicked out");
             existingPiece.MoveOut();
         }
 
@@ -154,7 +150,6 @@ namespace GameEngine
                 if (steps != 6)
                     return;
 
-                GameConsole.ConsolePrint(piece.Player, $" SCORES!");
                 piece.PassGoal();
                 return;
             }
