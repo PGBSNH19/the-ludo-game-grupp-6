@@ -99,6 +99,7 @@ namespace GameEngine
                     return this;
 
                 NextPlayer();
+                this.Update();
             }
         }
 
@@ -106,7 +107,13 @@ namespace GameEngine
         {
             Context.Game.Add(this);
             Context.SaveChanges();
-            Console.WriteLine("Game successfully saved");
+            GameConsole.ConsolePrint(Players.First(),"Game successfully saved");
+        }
+        private void Update()
+        {
+            Context.Game.Update(this);
+            Context.SaveChanges();
+            GameConsole.ConsolePrint(Players.First(), "Game successfully updated");
         }
 
         private void RenderScreen()
