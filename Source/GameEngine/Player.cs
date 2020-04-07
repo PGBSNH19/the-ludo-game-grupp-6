@@ -1,21 +1,26 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace GameEngine
 {
+    [Table("Player")]
     public class Player
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PlayerID { get; set; }
         public string Name { get; set; }
         public int Score { get; set; }
+        [Column("GameID")]
         public int GameID { get; set; }
         public Game Game { get; set; }
+        public PlayerType PlayerType { get; set; }
         [NotMapped]
         public Path InnerPath { get; set; }
-        public PlayerType PlayerType { get; set; }
 
         public ConsoleColor GetColor()
         {

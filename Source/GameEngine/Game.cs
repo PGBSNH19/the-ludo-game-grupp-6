@@ -38,6 +38,7 @@ namespace GameEngine
         public Game AddPlayer(Player player)
         {
             ValidateNewPlayerEntry(player);
+            player.Game = this;
             AddPieces(player);
 
             Players.Add(player);
@@ -104,7 +105,7 @@ namespace GameEngine
 
         private void Add()
         {
-            Context.Set<Game>().Add(this);
+            Context.Game.Add(this);
             Context.SaveChanges();
             Console.WriteLine("Game successfully saved");
         }

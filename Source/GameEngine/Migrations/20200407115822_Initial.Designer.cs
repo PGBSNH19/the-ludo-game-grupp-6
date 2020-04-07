@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameEngine.Migrations
 {
     [DbContext(typeof(LudoContext))]
-    [Migration("20200407105402_Initial")]
+    [Migration("20200407115822_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -92,6 +92,7 @@ namespace GameEngine.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("GameID")
+                        .HasColumnName("GameID")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")

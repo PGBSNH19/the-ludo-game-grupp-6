@@ -21,7 +21,7 @@ namespace GameEngine
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PieceID { get; set; }
-        [ForeignKey("Player")]
+        [ForeignKey("PlayerID")]
         public int PlayerID { get; set; }
         public Player Player { get; set; }
         public int Steps { get; set; }

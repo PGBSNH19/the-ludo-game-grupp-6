@@ -90,6 +90,7 @@ namespace GameEngine.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("GameID")
+                        .HasColumnName("GameID")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
