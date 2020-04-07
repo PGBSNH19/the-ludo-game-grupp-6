@@ -13,10 +13,9 @@ namespace GameEngine
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int GameID { get; set; }
-        [ForeignKey("Board")]
-        public int BoardID { get; set; }
-        public Board Board { get; set; }
 
+        [NotMapped]
+        public Board Board { get; set; }
         [NotMapped]
         public GameConsole GameConsole { get; set; }
         [NotMapped]
