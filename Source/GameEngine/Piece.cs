@@ -23,6 +23,7 @@ namespace GameEngine
         public int PieceID { get; set; }
         [ForeignKey("Player")]
         public int PlayerID { get; set; }
+        public Player Player { get; set; }
         public int Steps { get; set; }
         public bool Completed { get; set; } = false;
 
@@ -30,8 +31,6 @@ namespace GameEngine
         public string Visual { get; } = "◙";
         [NotMapped]
         public bool InPlay { get => !(X == 0 && Y == 0); }
-        [NotMapped]
-        public Player Player { get; set; }
 
         public Piece() 
         {

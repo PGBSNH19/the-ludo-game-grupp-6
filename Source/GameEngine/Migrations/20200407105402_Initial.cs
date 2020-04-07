@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace EFClassLibrary.Migrations
+namespace GameEngine.Migrations
 {
-    public partial class MigrationName : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -38,30 +38,6 @@ namespace EFClassLibrary.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Piece",
-                columns: table => new
-                {
-                    PieceID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    X = table.Column<int>(nullable: false),
-                    Y = table.Column<int>(nullable: false),
-                    PlayerID = table.Column<int>(nullable: false),
-                    Steps = table.Column<int>(nullable: false),
-                    Completed = table.Column<bool>(nullable: false),
-                    BoardID = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Piece", x => x.PieceID);
-                    table.ForeignKey(
-                        name: "FK_Piece_Board_BoardID",
-                        column: x => x.BoardID,
-                        principalTable: "Board",
-                        principalColumn: "BoardID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Player",
                 columns: table => new
                 {
@@ -83,6 +59,36 @@ namespace EFClassLibrary.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Piece",
+                columns: table => new
+                {
+                    PieceID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    X = table.Column<int>(nullable: false),
+                    Y = table.Column<int>(nullable: false),
+                    PlayerID = table.Column<int>(nullable: false),
+                    Steps = table.Column<int>(nullable: false),
+                    Completed = table.Column<bool>(nullable: false),
+                    BoardID = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Piece", x => x.PieceID);
+                    table.ForeignKey(
+                        name: "FK_Piece_Board_BoardID",
+                        column: x => x.BoardID,
+                        principalTable: "Board",
+                        principalColumn: "BoardID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Piece_Player_PlayerID",
+                        column: x => x.PlayerID,
+                        principalTable: "Player",
+                        principalColumn: "PlayerID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Game_BoardID",
                 table: "Game",
@@ -92,6 +98,11 @@ namespace EFClassLibrary.Migrations
                 name: "IX_Piece_BoardID",
                 table: "Piece",
                 column: "BoardID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Piece_PlayerID",
+                table: "Piece",
+                column: "PlayerID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Player_GameID",

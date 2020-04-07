@@ -23,9 +23,12 @@ namespace GameEngine
         public List<ScoreBoard> ScoreBoards { get; set; }
         [NotMapped]
         public List<Player> Players { get; set; }
+        [NotMapped]
+        public LudoContext Context  { get; set; }
 
         public Game()
         {
+            Context = new LudoContext();
             GameConsole = new GameConsole();
             Board = new Board();
             ScoreBoards = new List<ScoreBoard>();
@@ -84,6 +87,7 @@ namespace GameEngine
 
         public Game Start()
         {
+            this.Add();
             while (true)
             {
                 Console.ReadLine();
@@ -96,6 +100,13 @@ namespace GameEngine
 
                 NextPlayer();
             }
+        }
+
+        private void Add()
+        {
+            Context.Set<Game>().Add(this);
+            Context.SaveChanges();
+            Console.WriteLine("Game successfully saved");
         }
 
         private void RenderScreen()

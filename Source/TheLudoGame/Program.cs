@@ -14,6 +14,8 @@ namespace EFClassLibrary
         {
             ApplyGlobalAppSettings();
 
+            var context = new LudoContext();
+
             var game = new Game()
                 .AddPlayer(new Player { PlayerType = PlayerType.Red, Name = "Anders" })
                 .AddPlayer(new Player { PlayerType = PlayerType.Blue, Name = "Pierre" })
