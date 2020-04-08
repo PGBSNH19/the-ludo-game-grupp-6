@@ -28,7 +28,7 @@ namespace GameEngine
         private readonly int PADDING_LEFT = 5;
         private readonly int PADDING_TOP = 2;
 
-        public Board New(List<Player> players)
+        public Board New()
         {
             Pieces = new List<Piece>();
             return this;
