@@ -9,8 +9,9 @@ namespace UnitTestGameEngine
     public class BoardCollision
     {
         [TestMethod]
-        public void CollisionDetectionReturnsCollidingPiece()
+        public void Collision_Detection_Returns_CollidingPiece()
         {
+            //Arrange
             var playerRed = new Player { PlayerType = PlayerType.Red };
             var playerBlue = new Player { PlayerType = PlayerType.Blue };
             Game game = new Game()
@@ -24,10 +25,10 @@ namespace UnitTestGameEngine
             var pieceBlue = game.Board.Pieces.FirstOrDefault(p => p.Player == playerBlue);
             pieceRed.Move(6, 0);
 
-            // Act
+            //Act
             Piece result = game.Board.CollisionDetection(pieceBlue);
 
-            // Assert
+            //Assert
             Assert.IsNotNull(result);
         }
     }

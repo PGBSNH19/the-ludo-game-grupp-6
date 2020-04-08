@@ -58,7 +58,7 @@ namespace GameEngine
         /// Throws Exception if player of Type T already exists
         /// Throws Exception if Player count more than 4
         /// </summary>
-        private void ValidateNewPlayerEntry(Player player)
+        public void ValidateNewPlayerEntry(Player player)
         {
             if (Players.Count == 4)
                 throw new ArgumentOutOfRangeException("Can't add more than four players.");
@@ -69,6 +69,7 @@ namespace GameEngine
         public Game Build()
         {
             //GameStateReady();
+            CheckPlayerAmountRequirement();
             Board.Build(Players);
             return this;
         }
@@ -120,16 +121,16 @@ namespace GameEngine
         }
 
         /// <summary>
-        /// Throws exception if  more than 4 players
+        /// Throws exception if game has less than 2 or higher than 4 players.
         /// </summary>
-        public void GameStateReady()
+        public void CheckPlayerAmountRequirement()
         {
-            if (Players.Count() > 4)
-                throw new Exception("Four players or less is necessary to start.");
+            if (Players.Count() < 2 || Players.Count() > 4)
+                throw new Exception("Game needs 2-4 players to start.");
         }
 
         /// <summary>
-        /// Turn succession. Next players turn (Rotates Player List)
+        /// Turn succession. Next players turn (Rotates Player List).
         /// </summary>
         public void NextPlayer() => Players = Players.Skip(1).Concat(Players.Take(1)).ToList();
 

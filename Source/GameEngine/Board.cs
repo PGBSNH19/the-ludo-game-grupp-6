@@ -47,7 +47,11 @@ namespace GameEngine
             return this;
         }
 
-        private void DistributeInnerPaths(List<Player> players) =>
+        /// <summary>
+        /// Distributes the inner paths for every player using their PlayerType.
+        /// </summary>
+        /// <param name="players">The players in-game.</param>
+        public void DistributeInnerPaths(List<Player> players) =>
             players.ForEach(p => {
                 switch (p.PlayerType)
                 {
@@ -62,6 +66,9 @@ namespace GameEngine
                         break;
                     case PlayerType.Yellow:
                         p.InnerPath = YellowPath;
+                        break;
+                    default:
+                        new Exception("Could not find path for player type: " + p.PlayerType + ".");
                         break;
                 }
             });

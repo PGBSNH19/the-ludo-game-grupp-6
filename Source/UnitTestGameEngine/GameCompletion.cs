@@ -7,7 +7,7 @@ namespace UnitTestGameEngine
     public class GameCompletion
     {
         [TestMethod]
-        public void GameNotFinishedCondition()
+        public void Game_Not_Finished_Condition()
         {
             var player = new Player { Score = 0 };
             var game = new Game()
@@ -21,7 +21,7 @@ namespace UnitTestGameEngine
         }
 
         [TestMethod]
-        public void GameFinishedCondition()
+        public void Game_Finished_Condition()
         {
             var player = new Player { Score = 4 };
             var game = new Game()
