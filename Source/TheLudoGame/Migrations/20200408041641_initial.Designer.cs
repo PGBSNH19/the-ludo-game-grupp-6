@@ -10,8 +10,8 @@ using TheLudoGame.Context;
 namespace TheLudoGame.Migrations
 {
     [DbContext(typeof(LudoContext))]
-    [Migration("20200407224550_InitialLudoContext")]
-    partial class InitialLudoContext
+    [Migration("20200408041641_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

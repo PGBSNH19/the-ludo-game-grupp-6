@@ -25,18 +25,14 @@ namespace GameEngine
         public int PlayerID { get; set; }
         public Player Player { get; set; }
         public int Steps { get; set; }
-        public bool Completed { get; set; } = false;
+        public bool Completed { get; set; }
 
         [NotMapped]
         public string Visual { get; } = "◙";
         [NotMapped]
         public bool InPlay { get => !(X == 0 && Y == 0); }
 
-        public Piece() 
-        {
-            MoveOut();
-            Completed = false;
-        }
+        public void New() => Completed = false;
 
         public void PassGoal()
         {

@@ -16,12 +16,24 @@ namespace TheLudoGame.Modules
 
         public GameConsole() => Clear();
 
-        public void ConsolePrint(Player player, string data)
+        public void ConsolePrint(string data)
         {
             if(linesCount > CONSOLE_CAPACITY - 1)
                 Clear();
 
             Console.SetCursorPosition(PADDING_LEFT, linesCount + PADDING_TOP);
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"{data}");
+            linesCount++;
+        }
+
+        public void ConsolePrint(Player player, string data)
+        {
+            if (linesCount > CONSOLE_CAPACITY - 1)
+                Clear();
+
+            Console.SetCursorPosition(PADDING_LEFT, linesCount + PADDING_TOP);
+            Console.ForegroundColor = ConsoleColor.White;
             Console.Write(player.Name + " [");
             Console.ForegroundColor = player.GetColor();
             Console.Write(player.PlayerType);

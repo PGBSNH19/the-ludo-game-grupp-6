@@ -14,18 +14,20 @@ namespace GameEngine
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int GameID { get; set; }
         public DateTime LastAction { get; set; }
-        public bool Completed { get; set; } = false;
+        public bool Completed { get; set; }
         [ForeignKey("Board")]
         public int BoardID { get; set; }
         public Board Board { get; set; }
 
         public List<Player> Players { get; set; }
 
-        public Game()
+        public Game New()
         {
-            Board = new Board();
+            Completed = false;
             Players = new List<Player>();
-        }
+            Board = new Board();
+            return this;
+        } 
 
         public Game AddPlayer(Player player)
         {
@@ -41,7 +43,14 @@ namespace GameEngine
         {
             for (int i = 0; i < 4; i++)
             {
-                Board.Pieces.Add(new Piece { Player = owner });
+                Board.Pieces.Add(new Piece 
+                { 
+                    Player = owner, 
+                    X = 0, 
+                    Y = 0, 
+                    Steps = 0,
+                    Completed = false
+                });
             }
         }
 
@@ -60,12 +69,7 @@ namespace GameEngine
         public Game Build()
         {
             GameStateReady();
-            Board.Build(Players);
-            return this;
-        }
-
-        public Game Start()
-        {
+            Board.New(Players);
             return this;
         }
 

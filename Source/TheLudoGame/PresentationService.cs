@@ -1,4 +1,5 @@
 ﻿using GameEngine;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
@@ -17,63 +18,81 @@ namespace TheLudoGame
         public Game Game { get; set; }
         public GameConsole GameConsole { get; set; }
         public List<ScoreBoard> ScoreBoards { get; set; }
+        public Menu Menu { get; set; }
 
         public PresentationService(LudoContext ludoContext)
         {
             this.ludoContext = ludoContext;
+            Menu = new Menu(ludoContext);
             GameConsole = new GameConsole();
             ScoreBoards = new List<ScoreBoard>();
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-
             ApplyGlobalAppSettings();
 
-            // Start a game or load unsaved
-            Game = new Game()
-                .AddPlayer(new Player { PlayerType = PlayerType.Red, Name = "Anders" })
-                .AddPlayer(new Player { PlayerType = PlayerType.Blue, Name = "Pierre" })
-                .AddPlayer(new Player { PlayerType = PlayerType.Green, Name = "Nor" })
-                .AddPlayer(new Player { PlayerType = PlayerType.Yellow, Name = "Oscar" })
-                .Build()
-                .Start();
+            Console.Clear();
+            Menu.PrintMenuLogo();
+            Console.WriteLine("GAME HISTORY:");
+            Menu.GameHistoryView();
+            Console.ReadLine();
+            
+            Console.Clear();
+            Menu.PrintMenuLogo();
+            Game =  Menu.GameSelectionMenu();
+            Console.Clear();
 
             PopulateScoreBoards();
 
-            SaveGame();
+            Run();
 
+            return Task.CompletedTask;
+        }
+
+        public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+
+        private Task Run()
+        {
             while (true)
             {
                 Console.ReadLine();
 
                 int dice = Dice.Roll();
                 GameConsole.ConsolePrint(Game.Players.First(), $"rolls a {dice}");
+
                 Game.Action(dice);
+
                 Game.DrawBoard();
                 ScoreBoards.ForEach(s => s.Draw());
 
 
                 if (Game.Finished())
                 {
-                    // UpdateFinished();
+                    Game.Completed = true;
+                    UpdateGame().Wait();
                     return Task.CompletedTask;
                 }
 
                 Game.NextPlayer();
-                //Update();
+
+                var updateTask = UpdateGame();
+                updateTask.Wait();
+                if (updateTask.IsCompleted)
+                {
+                    GameConsole.ConsolePrint("Autosave complete");
+                }
             }
         }
 
-        private void SaveGame() 
+        private async Task UpdateGame()
         {
-            ludoContext.Game.Add(Game);
-            ludoContext.SaveChanges();
+            Game.LastAction = DateTime.Now;
+            ludoContext.Game.Update(Game);
+            await ludoContext.SaveChangesAsync();
         }
 
         void PopulateScoreBoards() => Game.Players.ForEach(p => ScoreBoards.Add(new ScoreBoard(p)));
-
-        public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
 
         private void ApplyGlobalAppSettings()
         {
