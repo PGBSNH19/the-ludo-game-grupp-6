@@ -25,7 +25,7 @@ namespace GameEngine
         {
             Completed = false;
             Players = new List<Player>();
-            Board = new Board();
+            Board = new Board().New();
             return this;
         } 
 
@@ -68,8 +68,8 @@ namespace GameEngine
 
         public Game Build()
         {
-            GameStateReady();
-            Board.New();
+            //GameStateReady();
+            Board.Build(Players);
             return this;
         }
 

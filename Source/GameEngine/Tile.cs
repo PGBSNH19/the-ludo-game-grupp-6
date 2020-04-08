@@ -12,7 +12,7 @@ namespace GameEngine
         public Tile() => Visual = " ";
 
         public void SetColor(string colorCode)
-        {
+            =>
             BackgroundColor = colorCode switch
             {
                 "R" => ConsoleColor.Red,
@@ -22,6 +22,5 @@ namespace GameEngine
                 "W" => ConsoleColor.DarkGray,
                 _ => ConsoleColor.Black,
             };
-        }
     }
 }

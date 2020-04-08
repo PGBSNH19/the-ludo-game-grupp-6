@@ -11,12 +11,9 @@ namespace TheLudoGame.Modules
 {
     public class Menu
     {
-        private LudoContext ludoContext;
+        private readonly LudoContext ludoContext;
 
-        public Menu(LudoContext ludoContext)
-        {
-            this.ludoContext = ludoContext;
-        }
+        public Menu(LudoContext ludoContext) => this.ludoContext = ludoContext;
 
         public Game GameSelectionMenu()
         {
@@ -42,6 +39,11 @@ namespace TheLudoGame.Modules
                 }
             }
 
+            return NewGame();
+        }
+
+        private Game NewGame()
+        {
             var game = new Game()
                 .New()
                 .AddPlayer(new Player { PlayerType = PlayerType.Red, Name = "Player one" })
@@ -50,7 +52,6 @@ namespace TheLudoGame.Modules
                 .AddPlayer(new Player { PlayerType = PlayerType.Yellow, Name = "Player four" })
                 .Build();
             SaveGame(game);
-
             return game;
         }
 

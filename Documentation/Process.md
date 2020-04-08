@@ -1,16 +1,12 @@
 ## To-Do list
 
-* Main menu
-  * Se historik
-  * Ladda pågående spel
-    * Visar meny av pågående spel
-      * Väljs på ID
-  * Starta nytt 
-    * Nytt spel Meny
-      * Antal spelare
-      * Spelarnamn
-  
-* Spel autosparas efter varje drag
+* ~~Main menu~~ 
+
+  * ~~Se historik~~
+  * ~~Ladda pågående spel~~
+  * ~~Starta nytt~~
+
+* ~~Spel autosparas efter varje drag~~
 
 * Skriv ner våra "custom" spelregler som del av Dokumentation
 
@@ -32,7 +28,10 @@
 
 ##### Tisdag 7/4 
 
-* Lös så att går att visa Historik
+* ~~Lös så att går att visa Historik~~
 
 ##### Onsdag 8/4
 
+* Skriv ner våra "custom" spelregler som del av Dokumentation
+* Överblicka projektbeskrivningen
+* Video Dokumentation
