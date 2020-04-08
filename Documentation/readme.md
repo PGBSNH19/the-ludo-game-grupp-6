@@ -62,7 +62,7 @@ RunGame()
 }
 ```
 
-#### User Stories
+### User Stories
 
 As a player i want to be able to play a game of ludo.
 As a player i want to be able to play with up to 3 friends.
@@ -78,13 +78,13 @@ As a player i want to be able to see History of completed games.
 
 
 
-#### Process
+### Process
 
 Vi började med att spela Ludo online för att lära oss reglerna. Googlade på bilder för referens till spelplanen.
 
 
 
-##### Presentationsdelen
+#### Presentationsdelen
 
 Presentationsdelen är core-projektet TheLudoGame som använder en IHostBuilder och IHostedService som startmetod. Därifrån visas en meny med spelhistorik och valet ges att fortsätta på en senaste spelomgången. Annars så flyttas tidigare spel till historik och man kommer in i ett nytt spel.
 
@@ -94,7 +94,7 @@ Spelets presentationsdel är uppbyggd med en Meny, ScoreBoards samt en Spelkonso
 
 
 
-##### Spelmotorn
+#### Spelmotorn
 
 En spelomgång instansieras med ett Game. Game håller koll på övergripande spelregler såsom turordning för spelare samt när ett spel ska anses avslutat.
 
@@ -106,7 +106,7 @@ Spelbjäser och markbrickor har X och Y koordinater som kan jämföras, och på 
 
 
 
-#### Designbeslut
+### Designbeslut
 
 Vi valde att förenkla menyn tillräckligt så att vi täckte uppgiftens krav. I lösningen kan endast ett spel vara pågående åt gången (pick up where you left off).
 
@@ -120,7 +120,7 @@ En bra lösning tyckte vi var att bygga brädet på koordinater som hämtas ifr�
 
 
 
-#### Spelregler
+### Spelregler
 
 * Spelare har bara en pjäs åt gången ute på spelplanen (**Unik**)
 * Man får ut en pjäs från boet, även i mål, genom att slå en 6:a
