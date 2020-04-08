@@ -84,9 +84,8 @@ namespace GameEngine
             });
         }
 
-        private void DrawPath(Path pathObj)
-        {
-            pathObj.Tiles.ForEach(t =>
+        private void DrawPath(Path pathObj) 
+            => pathObj.Tiles.ForEach(t =>
             {
                 Console.ForegroundColor = ConsoleColor.Black;
                 Console.BackgroundColor = t.BackgroundColor;
@@ -95,7 +94,6 @@ namespace GameEngine
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.BackgroundColor = ConsoleColor.Black;
             });
-        }
 
         public void MovePiece(Player player, int steps)
         {
