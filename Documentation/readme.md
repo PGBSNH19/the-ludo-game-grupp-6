@@ -30,7 +30,7 @@
 
 Available games:		
 
-Players: 3			Latest Move: 2020-03-30 15:12			ID: 1
+Players: 3	Latest Move: 2020-03-30 15:12		ID: 1
 
 Want to load a game? [Y/N]
 
@@ -66,17 +66,17 @@ RunGame()
 
 ## User Stories
 
-As a player i want to be able to play a game of ludo.
-As a player i want to be able to play with up to 3 friends.
-As a player i want to be able to choose color on my piece.
-As a player i want to be able to throw a dice.
-As a player i want to be able to move my piece.
-As a player i want to be able to knock my friends out.
-As a player i want to be able to save my progress.
-As a player i want to be able to start up where i left off.
-As a player i want to be able to finish a game.
-As a player i want to be able to clear the database from deprecated games.
-As a player i want to be able to see History of completed games.
+* As a player i want to be able to play a game of ludo.
+* As a player i want to be able to play with up to 3 friends.
+* As a player i want to be able to choose color on my piece.
+* As a player i want to be able to throw a dice.
+* As a player i want to be able to move my piece.
+* As a player i want to be able to knock my friends out.
+* As a player i want to be able to save my progress.
+* As a player i want to be able to start up where i left off.
+* As a player i want to be able to finish a game.
+* As a player i want to be able to clear the database from deprecated games.
+* As a player i want to be able to see History of completed games.
 
 
 ## Process
