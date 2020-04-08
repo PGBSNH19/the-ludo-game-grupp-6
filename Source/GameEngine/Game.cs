@@ -69,7 +69,7 @@ namespace GameEngine
         public Game Build()
         {
             GameStateReady();
-            Board.New(Players);
+            Board.New();
             return this;
         }
 
