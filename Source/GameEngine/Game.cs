@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using TheLudoGame.Context;
 
 namespace GameEngine
 {
@@ -135,5 +137,26 @@ namespace GameEngine
         public void NextPlayer() => Players = Players.Skip(1).Concat(Players.Take(1)).ToList();
 
         public bool PlayerOfTypeExists(PlayerType playerType) => Players.Any(x => x.PlayerType == playerType);
+
+        public async Task Update(LudoContext ludoContext)
+        {
+            LastAction = DateTime.Now;
+            ludoContext.Game.Update(this);
+            await ludoContext.SaveChangesAsync();
+        }
+
+        public void Save(LudoContext ludoContext)
+        {
+            LastAction = DateTime.Now;
+            ludoContext.Game.Add(this);
+            ludoContext.SaveChanges();
+        }
+
+        public static Game Load(LudoContext ludoContext) =>
+            ludoContext.Game
+                .Include(b => b.Board)
+                .ThenInclude(p => p.Pieces)
+                .ThenInclude(a => a.Player)
+                .FirstOrDefault(g => g.Completed == false);
     }
 }

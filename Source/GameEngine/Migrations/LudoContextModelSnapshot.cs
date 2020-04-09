@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TheLudoGame.Context;
 
-namespace TheLudoGame.Migrations
+namespace GameEngine.Migrations
 {
     [DbContext(typeof(LudoContext))]
     partial class LudoContextModelSnapshot : ModelSnapshot

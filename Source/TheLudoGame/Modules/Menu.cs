@@ -18,7 +18,6 @@ namespace TheLudoGame.Modules
         public Game GameSelectionMenu()
         {
             string choice = String.Empty;
-
             while (UnsavedGameExists())
             {
                 choice = GetChoice("Unsaved game exists. Want to load? [Y/N]");
@@ -26,19 +25,18 @@ namespace TheLudoGame.Modules
                 if (choice == "Y")
                 {
                     Console.WriteLine("Successfully loaded game.");
-                    var loadedGame = LoadGame();
+                    var loadedGame = Game.Load(ludoContext);
                     loadedGame.Board.Build(loadedGame.Players);
                     Console.ReadLine();
                     return loadedGame;
                 }
                 if (choice == "N")
                 {
-                    Task.Run(() => CompleteGames()).Wait();
+                    Task.Run(() => CompleteAllGames()).Wait();
                     Console.WriteLine("All ongoing games moved to history.");
                     Console.ReadLine();
                 }
             }
-
             return NewGame();
         }
 
@@ -51,15 +49,8 @@ namespace TheLudoGame.Modules
                 .AddPlayer(new Player { PlayerType = PlayerType.Green, Name = "Player three" })
                 .AddPlayer(new Player { PlayerType = PlayerType.Yellow, Name = "Player four" })
                 .Build();
-            SaveGame(game);
+            game.Save(ludoContext);
             return game;
-        }
-
-        private void SaveGame(Game game)
-        {
-            game.LastAction = DateTime.Now;
-            ludoContext.Game.Add(game);
-            ludoContext.SaveChanges();
         }
 
         internal void PrintMenuLogo() => Console.WriteLine(@"
@@ -79,22 +70,17 @@ namespace TheLudoGame.Modules
                     Console.WriteLine($"ID: {g.GameID}\t Last action: {g.LastAction} \t Players: {g.Players.Count}");
                 });
 
-        private async Task CompleteGames()
+        private async Task CompleteAllGames()
         {
-            var games = ludoContext.Game.Where(g => g.Completed == false).ToList();
+            var games = ludoContext.Game
+                .Where(g => g.Completed == false)
+                .ToList();
             games.ForEach(g => {
                 g.Completed = true;
                 ludoContext.Entry(g).Property("Completed").IsModified = true;
             });
             await ludoContext.SaveChangesAsync();
         }
-
-        private Game LoadGame() => 
-            ludoContext.Game
-                .Include(b => b.Board)
-                .ThenInclude(p => p.Pieces)
-                .ThenInclude(a => a.Player)
-                .FirstOrDefault(g => g.Completed == false);
 
         private bool UnsavedGameExists() => ludoContext.Game.Any(g => g.Completed == false);
 

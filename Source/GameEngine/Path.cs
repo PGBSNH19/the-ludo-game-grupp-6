@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System;
 
 namespace GameEngine
 {
@@ -7,6 +8,9 @@ namespace GameEngine
     {
         public List<Tile> Tiles { get; set; }
         public string PathUrl { get; set; }
+
+        private readonly int PADDING_LEFT = 5;
+        private readonly int PADDING_TOP = 2;
 
         public Path() => Tiles = new List<Tile>();
 
@@ -27,6 +31,16 @@ namespace GameEngine
             }
             return this;
         }
+
+        public void Draw() => Tiles.ForEach(t =>
+            {
+                Console.ForegroundColor = ConsoleColor.Black;
+                Console.BackgroundColor = t.BackgroundColor;
+                Console.SetCursorPosition(t.X + PADDING_LEFT, t.Y + PADDING_TOP);
+                Console.WriteLine(t.Visual);
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.BackgroundColor = ConsoleColor.Black;
+            });
     }
 
     public class OuterPath : Path

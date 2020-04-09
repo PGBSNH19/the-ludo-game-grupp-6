@@ -27,7 +27,7 @@ namespace GameEngine
 
         private readonly int PADDING_LEFT = 5;
         private readonly int PADDING_TOP = 2;
-
+        
         public Board New()
         {
             Pieces = new List<Piece>();
@@ -75,32 +75,23 @@ namespace GameEngine
 
         public void Draw() 
         {
-            DrawPath(OuterPath);
-            DrawPath(RedPath);
-            DrawPath(BluePath);
-            DrawPath(GreenPath);
-            DrawPath(YellowPath);
-            Pieces.Where(p => p.InPlay).ToList().ForEach(p =>
-            {
-                Console.ForegroundColor = p.Player.GetColor();
-                Console.BackgroundColor = ConsoleColor.White;
-                Console.SetCursorPosition(p.X + PADDING_LEFT, p.Y + PADDING_TOP);
-                Console.WriteLine(p.Visual);
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.BackgroundColor = ConsoleColor.Black;
-            });
+            OuterPath.Draw();
+            RedPath.Draw();
+            BluePath.Draw();
+            GreenPath.Draw();
+            YellowPath.Draw();
+            DrawPieces();
         }
 
-        private void DrawPath(Path pathObj) 
-            => pathObj.Tiles.ForEach(t =>
-            {
-                Console.ForegroundColor = ConsoleColor.Black;
-                Console.BackgroundColor = t.BackgroundColor;
-                Console.SetCursorPosition(t.X + PADDING_LEFT, t.Y + PADDING_TOP);
-                Console.WriteLine(t.Visual);
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.BackgroundColor = ConsoleColor.Black;
-            });
+        public void DrawPieces() => Pieces.Where(p => p.InPlay).ToList().ForEach(p =>
+        {
+            Console.ForegroundColor = p.Player.GetColor();
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.SetCursorPosition(p.X + PADDING_LEFT, p.Y + PADDING_TOP);
+            Console.WriteLine(p.Visual);
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.BackgroundColor = ConsoleColor.Black;
+        });
 
         public void MovePiece(Player player, int steps)
         {
