@@ -32,6 +32,6 @@
 
 ##### Onsdag 8/4
 
-* Skriv ner våra "custom" spelregler som del av Dokumentation
-* Överblicka projektbeskrivningen
-* Video Dokumentation
+* ~~Skriv ner våra "custom" spelregler som del av Dokumentation~~
+* ~~Överblicka projektbeskrivningen~~
+* ~~Video Dokumentation~~
